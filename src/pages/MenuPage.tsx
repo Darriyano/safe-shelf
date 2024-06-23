@@ -5,6 +5,8 @@ import Diet from "./Diet";
 import Grocery from "./Grocery";
 import Profile from "./Profile";
 import DietDetails from "./DietDetails";
+import GroceryDetails from "./GroceryDetails";
+
 
 const MenuPage: FC = () => {
     const [menuVisible, setMenuVisible] = useState(true);
@@ -16,9 +18,10 @@ const MenuPage: FC = () => {
             ) : (
                 <Routes>
                     <Route path="/diet/*" element={<Diet setMenuVisible={setMenuVisible}/>}></Route>
-                    <Route path="/grocery" element={<Grocery setMenuVisible={setMenuVisible}/>}></Route>
+                    <Route path="/grocery/*" element={<Grocery setMenuVisible={setMenuVisible}/>}></Route>
                     <Route path="/profile" element={<Profile setMenuVisible={setMenuVisible}/>}></Route>
                     <Route path="/details" element={<DietDetails setMenuVisible={setMenuVisible}/>}/>
+                    <Route path="/grocery-details" element={<GroceryDetails setMenuVisible={setMenuVisible}/>}/>
 
                 </Routes>
             )}

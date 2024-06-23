@@ -54,3 +54,40 @@ p {
     font-size: 20px;
     padding: 10px 47px 11px 47px;
 }
+
+.buttons {
+    position: fixed;
+    bottom: 20px;
+    display: flex;
+    justify-content: center; /* Выравнивание кнопок внутри контейнера по центру */
+    width: 100vw; /* Чтобы контейнер занимал всю ширину экрана */
+}
+
+.fixed-button {
+    padding: 10px 48px 11px 48px;
+    color: #4D544B;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 20px;
+    margin: 0 35px; /* Отступы между кнопками */
+}
+
+.delete {
+    border: 1px solid #D51A1A;
+}
+
+.save {
+    background-color: #79CB64;
+}
+
+.date-picker {
+    width: 296px;
+    background-color: #D9D9D9;
+    color: #4D544B;
+    padding: 10px 48px 11px 48px;
+    font-size: 20px;
+    border: 0px;
+    border-radius: 25px;
+    font-family: "Roboto", sans-serif;
+    margin-top: 20px;
+}
