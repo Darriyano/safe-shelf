@@ -1,6 +1,6 @@
 import {FC} from "react";
 import React from 'react';
-import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
+import {Link} from "react-router-dom";
 import '../styles/menuStyles.css'
 
 const Menu: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
