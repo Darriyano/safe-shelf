@@ -8,7 +8,7 @@ interface CardContainerProps {
         groceryName: string,
         parameters: Array<string>,
         description: string,
-        date: Date
+        date: string
     }[];
 }
 
@@ -16,7 +16,7 @@ interface CardContainerProps {
 const CardContainer: React.FC<CardContainerProps> = ({cards}) => {
     const navigate = useNavigate();
 
-    const action = (groceryName: string, description: string, parameters: Array<string>, date: Date) => {
+    const action = (groceryName: string, description: string, parameters: Array<string>, date: string) => {
         navigate('/grocery-details', {
             state: {groceryName, description, parameters, date}
         });

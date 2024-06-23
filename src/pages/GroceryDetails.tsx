@@ -12,11 +12,10 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
         groceryName: string,
         parameters: Array<string>,
         description: string,
-        date: Date
+        date: string;
     };
 
-    const currDate: string = date.toLocaleString();
-    const [selectedDate, setSelectedDate] = useState('');
+    const [selectedDate, setSelectedDate] = useState(date);
 
     // Функция для обновления состояния выбранной даты
     const handleDateChange = (e: any) => {
