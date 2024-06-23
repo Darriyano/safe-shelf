@@ -1,0 +1,43 @@
+.details-page {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.heading {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.dish-name {
+    font-family: "Roboto", sans-serif;
+    font-size: 25px;
+    color: #4D544B;
+}
+
+p {
+    font-family: "Roboto", sans-serif;
+    color: #4D544B;
+    font-size: 20px;
+}
+
+.list-decoration {
+    list-style-type: circle;
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+    color: #4D544B;
+    font-size: 20px;
+}
+
+.descript {
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+    font-size: 20px;
+}
