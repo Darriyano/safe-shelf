@@ -1,22 +1,19 @@
 import {FC} from "react";
 import React from 'react';
-import ReactDOM from 'react-dom/client';
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
-import Grocery from "./Grocery";
-import Diet from "./Diet";
-import Profile from "./Profile";
+import '../styles/menuStyles.css'
 
-const Menu: FC = () => {
+const Menu: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     return (
         <>
-            <Link to="/diet">DIET</Link>
-            <Link to="/grocery">GR</Link>
-            <Link to="/profile">PROF</Link>
-            <Routes>
-                <Route path="/diet" element={<Diet/>}></Route>
-                <Route path="/grocery" element={<Grocery/>}></Route>
-                <Route path="/profile" element={<Profile/>}></Route>
-            </Routes>
+            <div className='menuPage'>
+                <h1 className='h1'>Main Menu</h1>
+                <div><Link to="/diet" onClick={() => setMenuVisible(false)}>Diet</Link></div>
+                <nav></nav>
+                <div><Link to="/grocery" onClick={() => setMenuVisible(false)}>Grocery list</Link></div>
+                <nav></nav>
+                <div><Link to="/profile" onClick={() => setMenuVisible(false)}>Profile</Link></div>
+            </div>
         </>
     );
 }

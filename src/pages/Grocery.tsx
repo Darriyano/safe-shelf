@@ -1,9 +1,13 @@
 import {FC} from "react";
+import HeaderPage from "./HeaderPage";
 
-const Grocery: FC = () => {
+const Grocery: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     return (
         <>
-            GROCERY PAGE
+            <HeaderPage setMenuVisible={setMenuVisible}/>
+            <div className='pageContainer'>
+                <h1>Grocery Page</h1>
+            </div>
         </>
     )
 };

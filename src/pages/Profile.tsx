@@ -1,9 +1,13 @@
 import {FC} from "react";
+import HeaderPage from "./HeaderPage";
 
-const Profile: FC = () => {
+const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     return (
         <>
-            PROFILE PAGE
+            <HeaderPage setMenuVisible={setMenuVisible}/>
+            <div className='pageContainer'>
+                <h1>Profile</h1>
+            </div>
         </>
     )
 };

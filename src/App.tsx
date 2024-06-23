@@ -1,13 +1,16 @@
-import React from 'react';
-import {Routes, Route, Link} from 'react-router-dom'
-import Menu from "./pages/menu";
+import React, {useState} from 'react';
+import MenuPage from "./pages/MenuPage";
+
 
 // import './App.css';
 
 function App() {
     return (
         <div>
-            <Menu/>
+            {/*If login, header will always be shown to the user, before it will be
+            register page and checker for login
+            */}
+            <MenuPage/>
         </div>
     );
 }
