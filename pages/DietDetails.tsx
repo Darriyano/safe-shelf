@@ -42,6 +42,7 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
                 <div className='descript'>{description}</div>
 
             </div>
+            <button className='cooked'>Cooked</button>
         </>
     )
 };

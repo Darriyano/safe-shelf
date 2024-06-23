@@ -71,3 +71,16 @@ button.active::after {
 .card-display svg {
     margin-left: auto; /* Помещает иконку в правый конец блока */
 }
+
+.regenerate {
+    position: fixed;
+    font-family: "Roboto", sans-serif;
+    bottom: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    border-radius: 20px;
+    background-color: #F5DD86;
+    color: #4D544B;
+    font-size: 20px;
+    padding: 10px 47px 11px 47px;
+}

@@ -2,8 +2,6 @@ import {FC, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import '../styles/dietStyles.css'
 import CardContainer from "./dietComponent";
-import {Route, Routes} from "react-router-dom";
-import DietDetails from "./DietDetails";
 
 
 const Diet: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
@@ -72,9 +70,9 @@ const Diet: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisibl
                     {renderComponent()}
                 </div>
             </div>
+            <button className='regenerate'>Regenerate</button>
         </div>
     )
 };
-
 
 export default Diet;
