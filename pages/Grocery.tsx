@@ -2,9 +2,16 @@ import {FC} from "react";
 import HeaderPage from "./HeaderPage";
 import GroceryContainer from "./GroceryComponent";
 import '../styles/dietStyles.css'
+import {useNavigate} from "react-router-dom";
 
 
 const Grocery: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
+    const navigate = useNavigate();
+
+    const addNavigate = () => {
+        navigate('/grocery-scanner');
+    }
+
     return (
         <>
             <HeaderPage setMenuVisible={setMenuVisible}/>
@@ -24,7 +31,7 @@ const Grocery: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                         date: "2021-04-12"
                     }
                 ]}/>
-                <button className='add'>Add groceries</button>
+                <button className='add' onClick={() => addNavigate()}>Add groceries</button>
             </div>
         </>
     )
