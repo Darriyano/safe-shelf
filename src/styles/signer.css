@@ -1,24 +1,27 @@
-.pageContainer {
+.wrapper {
     width: 100vw;
+    height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-
+    font-family: "Roboto", sans-serif;
+    align-items: center;
 }
 
+
 h1 {
-    font-weight: 400;
     color: #4D544B;
-    font-size: 30px;
+    font-size: 40px;
     margin-bottom: 40px;
     margin-top: 45px;
 }
 
-.inputs {
+.inputs-sig {
     display: flex;
     flex-direction: column;
 }
 
-.inputs input {
+.inputs-sig input {
     width: 350px;
     background-color: #D9D9D9;
     color: #4D544B;
@@ -31,7 +34,13 @@ h1 {
     margin-bottom: 30px;
 }
 
-.inputs select {
+.inputs-sig label {
+    margin-bottom: 5px;
+    color: #D2D4D2;
+    font-size: 15px;
+}
+
+.inputs-sig select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -47,21 +56,34 @@ h1 {
     padding-left: 19px;
 }
 
-.inputs label {
+.login-btn {
+    font-family: "Roboto", sans-serif;
+    border: none;
+    border-radius: 20px;
+    background-color: #79CB64;
+    color: white;
+    font-size: 20px;
+    padding: 10px 47px 11px 47px;
+}
+
+.text {
+    margin-top: 60px;
+    color: #4D544B;
+    font-size: 20px;
+}
+
+.signbtn {
+    font-family: "Roboto", sans-serif;
+    border: none;
+    border-radius: 20px;
+    background-color: #91E0F9;
+    color: #4D544B;
+    font-size: 20px;
+    margin-top: 80px;
+}
+
+.inputs-log label {
     margin-bottom: 5px;
     color: #D2D4D2;
     font-size: 15px;
-}
-
-.savebtn {
-    position: fixed;
-    font-family: "Roboto", sans-serif;
-    bottom: 20px;
-    left: 50%;
-    transform: translate(-50%);
-    border-radius: 20px;
-    background-color: #79CB64;
-    color: #4D544B;
-    font-size: 20px;
-    padding: 10px 47px 11px 47px;
 }
