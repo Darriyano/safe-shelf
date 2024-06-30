@@ -8,7 +8,6 @@ const Menu: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisibl
         <>
             <div className='menuPage'>
                 <h1 className='h1'>Main Menu</h1>
-
                 <div><Link to="/diet" onClick={() => setMenuVisible(false)}>Diet</Link></div>
                 <nav></nav>
                 <div><Link to="/grocery" onClick={() => setMenuVisible(false)}>Grocery list</Link></div>
