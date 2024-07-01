@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import LoginPage from "./pages/LoginPage";
-import {Link, Navigate, Route, Router, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import Diet from "./pages/Diet";
 import Grocery from "./pages/Grocery";
 import Profile from "./pages/Profile";
@@ -9,11 +9,12 @@ import GroceryDetails from "./pages/GroceryDetails";
 import QRScanPage from "./pages/QRScanPage";
 import Menu from "./pages/menu";
 import SignPage from "./pages/SignPage";
+import {useResponse} from "./pages/ResponseContext";
 
 
 const App: React.FC = () => {
     const [menuVisible, setMenuVisible] = useState(true);
-
+    const {response, setResponse} = useResponse();
     const [isLoggedIn, setIsLoggedIn] = useState('');
 
     const handleLogin = (loggedIn: string) => {
@@ -25,7 +26,7 @@ const App: React.FC = () => {
             <Routes>
                 {/* Default route handling */}
                 <Route path="/" element={
-                    isLoggedIn ? <Navigate to="/menu"/> : <LoginPage onChange={handleLogin}/>
+                    isLoggedIn ? <Navigate to="/menu"/> : <LoginPage onChange={handleLogin} setResponse={setResponse}/>
                 }/>
 
                 {/* Route to menu */}
