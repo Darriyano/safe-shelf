@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, {FC} from "react";
 import '../styles/login.css'
 import {useNavigate} from "react-router-dom";
 
@@ -8,10 +8,18 @@ interface LoginData {
     password: string
 }
 
+interface statusResponse400 {
+    code: string,
+    description: string,
+    exceptionName: string,
+    exceptionMessage: string
+}
+
 interface LoginPageProps {
-    onChange: (value: string) => void;
+    onChange: (value: boolean) => void;
     setResponse: React.Dispatch<React.SetStateAction<string>>;
 }
+
 
 const LoginPage: FC<LoginPageProps> = ({onChange, setResponse}) => {
     /* По нажатию будет срабатывать кнопка, которая собирает всю инфу с полей и проверяет ее в handle change, отправляя
@@ -26,8 +34,8 @@ const LoginPage: FC<LoginPageProps> = ({onChange, setResponse}) => {
         }
 
         try {
-            if (login == '' || password == '') {
-                throw new Error('empty login or email!');
+            if (login === '' || password === '') {
+                throw new Error('Incorrect input: fill all fields!');
             }
             const sending = await fetch('/account/login', {
                 method: 'POST',
@@ -41,14 +49,21 @@ const LoginPage: FC<LoginPageProps> = ({onChange, setResponse}) => {
                 throw new Error('Network response was not ok');
             }
 
-            const data = await sending.text();
+            const currentStatus = sending.status;
 
-            if (data == "ok") {
+            if (currentStatus === 200) {
+                /* Все заебок и мы ставим в качестве внутреннего ID логин юзера
+                * Нужен ли тут вообще какой-то JSON или нет? Как по мне нет, и так все супер */
                 setResponse(login);
-                onChange(data)
-
+                onChange(true)
+            } else if (currentStatus >= 400) {
+                /* Значит какой-то кринж и мы этот кринж обрабатываем */
+                const badRequest: statusResponse400 = await sending.json();
+                const stringError: string = badRequest.code + badRequest.description + ". " + badRequest.exceptionName + ": " + badRequest.exceptionMessage;
+                throw new Error(stringError);
             } else {
-                throw new Error('Theres no such email');
+                // ЧТО ДЕЛАЕМ?
+                throw new Error('Непредвиденная ошибка. Попробуйте позже');
             }
         } catch (error) {
             alert(error)

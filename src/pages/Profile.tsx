@@ -35,7 +35,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
 
     // For now is useless
     const handleSave = () => {
-
+        const login = (document.getElementById('mail') as HTMLInputElement).value;
+        setResponse(login);
     }
 
     return (

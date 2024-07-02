@@ -15,9 +15,9 @@ import {useResponse} from "./pages/ResponseContext";
 const App: React.FC = () => {
     const [menuVisible, setMenuVisible] = useState(true);
     const {response, setResponse} = useResponse();
-    const [isLoggedIn, setIsLoggedIn] = useState('');
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    const handleLogin = (loggedIn: string) => {
+    const handleLogin = (loggedIn: boolean) => {
         setIsLoggedIn(loggedIn);
     };
 

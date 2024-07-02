@@ -1,6 +1,7 @@
 import {FC, useEffect, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import '../styles/profileStyles.css'
+import {useResponse} from "./ResponseContext";
 
 interface ProfileData {
     mail: string,
@@ -12,6 +13,9 @@ interface ProfileData {
 }
 
 const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
+
+    // In response we save mail info about user
+    const {response, setResponse} = useResponse();
 
     /*Only for testing*/
     const username: string = "DaryaDarya";
@@ -30,43 +34,10 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
     const [currentSex, setCurrentSex] = useState(sex);
 
     // For now is useless
-    // useEffect(() => {
-    //     // Fetch data from backend
-    //     const fetchData = async () => {
-    //         try {
-    //             const response = await fetch('/api/profile'); // Replace with your actual API endpoint
-    //             const data: ProfileData = await response.json();
-    //             setProfileData(data);
-    //             setCurrentSurname(data.surname);
-    //             setCurrentPass(data.password);
-    //             setCurrentName(data.username);
-    //             setCurrentMail(data.mail);
-    //             setCurrentAge(data.age);
-    //             setCurrentSex(data.sex);
-    //         } catch (error) {
-    //             console.error('Error fetching profile data:', error);
-    //         }
-    //     };
-    //
-    //     fetchData();
-    
-    // }, []);
-    //
     const handleSave = () => {
+        const login = (document.getElementById('mail') as HTMLInputElement).value;
+        setResponse(login);
     }
-    // const handleSave = () => {
-    //     if (profileData) {
-    //         setProfileData({
-    //             ...profileData,
-    //             username: currentName,
-    //             surname: currentSurname,
-    //             mail: currentMail,
-    //             password: currentPass,
-    //             age: currentAge.toString() === '' ? 0 : currentAge,
-    //             sex: currentSex,
-    //         });
-    //     }
-    // };
 
     return (
         <>
