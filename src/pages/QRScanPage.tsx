@@ -1,8 +1,8 @@
-import {FC, useState} from "react";
+import {FC, useEffect, useRef, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import '../styles/qr.css'
 import {useNavigate} from "react-router-dom";
-import QrReader from 'react-qr-scanner';
+import QrScanner from "qr-scanner";
 
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
@@ -10,17 +10,42 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
         navigate('/grocery/*');
     }
 
-    const [scanResult, setScanResult] = useState<string | null>(null);
+    const scanner = useRef<QrScanner>();
+    const videoEl = useRef<HTMLVideoElement>(null);
 
-    const handleScan = (data: any) => {
-        if (data) {
-            setScanResult(data);
+    const [scannedResult, setScannedResult] = useState<string | undefined>("");
+
+    const onScanSuccess = (result: QrScanner.ScanResult) => {
+        alert(result);
+        setScannedResult(result?.data);
+    };
+
+    const onScanFail = (err: string | Error) => {
+        console.log(err);
+    };
+
+    useEffect(() => {
+        if (videoEl?.current && !scanner.current) {
+            scanner.current = new QrScanner(videoEl?.current, onScanSuccess, {
+                onDecodeError: onScanFail,
+                preferredCamera: "environment",
+                highlightCodeOutline: true,
+            });
+
+            scanner?.current
+                ?.start()
+                .catch((err) => {
+                    console.log(err);
+                });
         }
-    };
 
-    const handleError = (err: any) => {
-        console.error(err);
-    };
+        return () => {
+            if (!videoEl?.current) {
+                scanner?.current?.stop();
+            }
+        };
+    }, []);
+
 
     return (
         <>
@@ -36,17 +61,23 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                     </div>
                     <div> Scan the QR</div>
                 </div>
-                <QrReader
-                    delay={300}
-                    onError={handleError}
-                    onScan={handleScan}
-                    style={{
-                        marginTop: '165px',
-                        height: '90%',
-                        width: '60%',
-                        borderRadius: '25px'
-                    }}
-                />
+                <div className="qr-reader">
+                    <video ref={videoEl}></video>
+
+                    {scannedResult && (
+                        <p
+                            style={{
+                                position: "absolute",
+                                top: 0,
+                                left: 0,
+                                zIndex: 99999,
+                                color: "white",
+                            }}
+                        >
+                            Scanned Result: {scannedResult}
+                        </p>
+                    )}
+                </div>
             </div>
         </>
     )
