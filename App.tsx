@@ -11,7 +11,6 @@ import Menu from "./src/pages/menu";
 import SignPage from "./src/pages/SignPage";
 import {useResponse} from "./src/pages/ResponseContext";
 
-
 const App: React.FC = () => {
     const [menuVisible, setMenuVisible] = useState(true);
     const {response, setResponse} = useResponse();

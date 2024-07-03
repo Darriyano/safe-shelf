@@ -2,7 +2,7 @@ import {FC, useEffect, useRef, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import '../styles/qr.css'
 import {useNavigate} from "react-router-dom";
-import QrScanner from "qr-scanner";
+import {QrReader} from 'react-qr-reader';
 
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
@@ -10,42 +10,11 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
         navigate('/grocery/*');
     }
 
-    const scanner = useRef<QrScanner>();
-    const videoEl = useRef<HTMLVideoElement>(null);
-
-    const [scannedResult, setScannedResult] = useState<string | undefined>("");
-
-    const onScanSuccess = (result: QrScanner.ScanResult) => {
-        alert(result);
-        setScannedResult(result?.data);
-    };
+    const [data, setData] = useState('No result')
 
     const onScanFail = (err: string | Error) => {
         console.log(err);
     };
-
-    useEffect(() => {
-        if (videoEl?.current && !scanner.current) {
-            scanner.current = new QrScanner(videoEl?.current, onScanSuccess, {
-                onDecodeError: onScanFail,
-                preferredCamera: "environment",
-                highlightCodeOutline: true,
-            });
-
-            scanner?.current
-                ?.start()
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-
-        return () => {
-            if (!videoEl?.current) {
-                scanner?.current?.stop();
-            }
-        };
-    }, []);
-
 
     return (
         <>
@@ -62,21 +31,18 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                     <div> Scan the QR</div>
                 </div>
                 <div className="qr-reader">
-                    <video ref={videoEl}></video>
-
-                    {scannedResult && (
-                        <p
-                            style={{
-                                position: "absolute",
-                                top: 0,
-                                left: 0,
-                                zIndex: 99999,
-                                color: "white",
-                            }}
-                        >
-                            Scanned Result: {scannedResult}
-                        </p>
-                    )}
+                    <QrReader
+                        onResult={(result, error) => {
+                            if (!!result) {
+                                setData(result?.getText());
+                            }
+                            if (!!error) {
+                                console.info(error);
+                            }
+                        }}
+                        constraints={{facingMode: 'environment'}}
+                    />
+                    <p>{data}</p>
                 </div>
             </div>
         </>
