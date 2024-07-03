@@ -1,2 +1,2 @@
 /// <reference types="react-scripts" />
-declare module 'qr-scanner';
+declare module 'react-qr-scanner';
