@@ -45,21 +45,18 @@ const LoginPage: FC<LoginPageProps> = ({onChange, setResponse}) => {
                 body: JSON.stringify(loginData),
             });
 
-            if (!sending.ok) {
-                throw new Error('Network response was not ok');
-            }
 
             const currentStatus = sending.status;
 
             if (currentStatus === 200) {
-                /* Все заебок и мы ставим в качестве внутреннего ID логин юзера
+                /* Все nice и мы ставим в качестве внутреннего ID логин юзера
                 * Нужен ли тут вообще какой-то JSON или нет? Как по мне нет, и так все супер */
                 setResponse(login);
                 onChange(true)
             } else if (currentStatus >= 400) {
                 /* Значит какой-то кринж и мы этот кринж обрабатываем */
                 const badRequest: statusResponse400 = await sending.json();
-                const stringError: string = badRequest.code + badRequest.description + ". " + badRequest.exceptionName + ": " + badRequest.exceptionMessage;
+                const stringError: string = badRequest.description;
                 throw new Error(stringError);
             } else {
                 // ЧТО ДЕЛАЕМ?

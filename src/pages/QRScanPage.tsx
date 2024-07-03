@@ -2,7 +2,7 @@ import {FC, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import '../styles/qr.css'
 import {useNavigate} from "react-router-dom";
-import QrReader from 'react-qr-scanner';
+import {QrReader} from 'react-qr-reader';
 
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
@@ -14,6 +14,7 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
 
     const handleScan = (data: any) => {
         if (data) {
+            alert(data)
             setScanResult(data);
         }
     };
@@ -37,15 +38,21 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                     <div> Scan the QR</div>
                 </div>
                 <QrReader
-                    delay={300}
-                    onError={handleError}
-                    onScan={handleScan}
+                    onResult={(result: any, error: Error | null) => {
+                        if (result) {
+                            handleScan(result);
+                        }
+                        if (error) {
+                            handleError(error);
+                        }
+                    }}
                     style={{
                         marginTop: '165px',
                         height: '90%',
                         width: '60%',
                         borderRadius: '25px'
                     }}
+                    onError={handleError}
                 />
             </div>
         </>
