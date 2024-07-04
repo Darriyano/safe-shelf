@@ -1,16 +1,15 @@
 import React, {useState} from 'react';
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./src/pages/LoginPage";
 import {Navigate, Route, Routes} from "react-router-dom";
-import Diet from "./pages/Diet";
-import Grocery from "./pages/Grocery";
-import Profile from "./pages/Profile";
-import DietDetails from "./pages/DietDetails";
-import GroceryDetails from "./pages/GroceryDetails";
-import QRScanPage from "./pages/QRScanPage";
-import Menu from "./pages/menu";
-import SignPage from "./pages/SignPage";
-import {useResponse} from "./pages/ResponseContext";
-
+import Diet from "./src/pages/Diet";
+import Grocery from "./src/pages/Grocery";
+import Profile from "./src/pages/Profile";
+import DietDetails from "./src/pages/DietDetails";
+import GroceryDetails from "./src/pages/GroceryDetails";
+import QRScanPage from "./src/pages/QRScanPage";
+import Menu from "./src/pages/menu";
+import SignPage from "./src/pages/SignPage";
+import {useResponse} from "./src/pages/ResponseContext";
 
 const App: React.FC = () => {
     const [menuVisible, setMenuVisible] = useState(true);

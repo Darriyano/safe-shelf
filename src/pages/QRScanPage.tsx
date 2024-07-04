@@ -1,25 +1,20 @@
-import {FC, useState} from "react";
+import {FC, useEffect, useRef, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import '../styles/qr.css'
 import {useNavigate} from "react-router-dom";
-import QrReader from 'react-qr-scanner';
+import {QrReader} from 'react-qr-reader';
 
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
-    const reNavigate = () => {
+    const reNavigate = (result: any) => {
+        setData(result?.getText());
         navigate('/grocery/*');
     }
 
-    const [scanResult, setScanResult] = useState<string | null>(null);
+    const [data, setData] = useState('No result')
 
-    const handleScan = (data: any) => {
-        if (data) {
-            setScanResult(data);
-        }
-    };
-
-    const handleError = (err: any) => {
-        console.error(err);
+    const onScanFail = (err: string | Error) => {
+        alert(err);
     };
 
     return (
@@ -36,17 +31,19 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                     </div>
                     <div> Scan the QR</div>
                 </div>
-                <QrReader
-                    delay={300}
-                    onError={handleError}
-                    onScan={handleScan}
-                    style={{
-                        marginTop: '165px',
-                        height: '90%',
-                        width: '60%',
-                        borderRadius: '25px'
-                    }}
-                />
+                <div className="qr-reader">
+                    <QrReader
+                        onResult={(result, error) => {
+                            if (!!result) {
+                                reNavigate(result);
+                            }
+                            if (!!error) {
+                                onScanFail(error);
+                            }
+                        }}
+                        constraints={{facingMode: 'environment'}}
+                    />
+                </div>
             </div>
         </>
     )

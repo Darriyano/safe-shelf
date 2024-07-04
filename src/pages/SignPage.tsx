@@ -37,7 +37,6 @@ const SignPage = () => {
         }
 
         try {
-            alert(JSON.stringify(signed))
             const sending = await fetch("/account/register", {
                 method: 'POST',
                 headers: {
