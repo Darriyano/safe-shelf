@@ -45,8 +45,7 @@ const LoginPage: FC<LoginPageProps> = ({onChange, setResponse}) => {
                 body: JSON.stringify(loginData),
             });
 
-
-            const currentStatus = sending.status;
+            const currentStatus: number = sending.status;
 
             if (currentStatus === 200) {
                 /* Все nice и мы ставим в качестве внутреннего ID логин юзера

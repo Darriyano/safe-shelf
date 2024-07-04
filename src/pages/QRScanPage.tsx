@@ -3,18 +3,16 @@ import HeaderPage from "./HeaderPage";
 import '../styles/qr.css'
 import {useNavigate} from "react-router-dom";
 import {QrReader} from 'react-qr-reader';
+import {useResponse} from "./ResponseContext";
+import {useQRResponse} from "./QRResponseContext";
 
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
+    const {qrResponse, setQrResponse} = useQRResponse();
+
     const reNavigate = () => {
-        navigate('/grocery/*');
+        navigate('/grocery-temporary');
     }
-
-    const [data, setData] = useState('No result')
-
-    const onScanFail = (err: string | Error) => {
-        console.log(err);
-    };
 
     return (
         <>
@@ -34,7 +32,8 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                     <QrReader
                         onResult={(result, error) => {
                             if (!!result) {
-                                setData(result?.getText());
+                                setQrResponse(result?.getText());
+                                reNavigate();
                             }
                             if (!!error) {
                                 console.info(error);
@@ -42,7 +41,7 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                         }}
                         constraints={{facingMode: 'environment'}}
                     />
-                    <p>{data}</p>
+                    {/*<p>{data}</p>*/}
                 </div>
             </div>
         </>

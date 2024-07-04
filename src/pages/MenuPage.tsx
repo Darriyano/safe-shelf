@@ -7,6 +7,7 @@ import Profile from "./Profile";
 import DietDetails from "./DietDetails";
 import GroceryDetails from "./GroceryDetails";
 import QRScanPage from "./QRScanPage";
+import GroceryTemporary from "./GroceryTemporary";
 
 
 const MenuPage: FC = () => {
@@ -24,8 +25,7 @@ const MenuPage: FC = () => {
                     <Route path="/details" element={<DietDetails setMenuVisible={setMenuVisible}/>}/>
                     <Route path="/grocery-details" element={<GroceryDetails setMenuVisible={setMenuVisible}/>}/>
                     <Route path="/grocery-scanner" element={<QRScanPage setMenuVisible={setMenuVisible}/>}/>
-
-
+                    <Route path="/grocery-temporary" element={<GroceryTemporary setMenuVisible={setMenuVisible}/>}/>
                 </Routes>
             )}
         </div>

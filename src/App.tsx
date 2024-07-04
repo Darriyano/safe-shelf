@@ -10,6 +10,7 @@ import QRScanPage from "./pages/QRScanPage";
 import Menu from "./pages/menu";
 import SignPage from "./pages/SignPage";
 import {useResponse} from "./pages/ResponseContext";
+import GroceryTemporary from "./pages/GroceryTemporary";
 
 
 const App: React.FC = () => {
@@ -38,6 +39,8 @@ const App: React.FC = () => {
                 <Route path="/details" element={<DietDetails setMenuVisible={setMenuVisible}/>}/>
                 <Route path="/grocery-details" element={<GroceryDetails setMenuVisible={setMenuVisible}/>}/>
                 <Route path="/grocery-scanner" element={<QRScanPage setMenuVisible={setMenuVisible}/>}/>
+                <Route path="/grocery-temporary" element={<GroceryTemporary setMenuVisible={setMenuVisible}/>}/>
+
             </Routes>
         </div>
     )

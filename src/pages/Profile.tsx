@@ -47,7 +47,6 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
             try {
                 const currResponse = await fetch(`/account/${response.toString()}`);
                 const data: ProfileData = await currResponse.json();
-
                 // setProfileData(data);
                 setCurrentMail(data.login)
                 setCurrentAge(Number(data.age));
@@ -55,13 +54,11 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 setCurrentSex(data.sex);
                 setCurrentSurname(data.surname);
                 setCurrentName(data.name)
-
             } catch (err) {
                 alert(err);
             } finally {
             }
         };
-
         fetchProfileData();
     }, []);
 

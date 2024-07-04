@@ -1,13 +1,40 @@
-import {FC} from "react";
+import {FC, useEffect} from "react";
 import HeaderPage from "./HeaderPage";
 import GroceryContainer from "./GroceryComponent";
 import '../styles/dietStyles.css'
 import {useNavigate} from "react-router-dom";
 
 
+interface GroceryList {
+    allGroceries: Array<Grocery>
+}
+
+interface Grocery {
+    id: number;
+    name: string;
+    weight: number;
+    kkal: number;
+    proteins: number;
+    fats: number;
+    carbohydrates: number;
+}
+
 const Grocery: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
 
+    // useEffect(() => {
+    //     const fetchProfileData = async () => {
+    //         try {
+    //             const currResponse = await fetch(`/account/`);
+    //             const data: ProfileData = await currResponse.json();
+    //             // setProfileData(data);
+    //         } catch (err) {
+    //             alert(err);
+    //         } finally {
+    //         }
+    //     };
+    //     fetchProfileData();
+    // }, []);
     const addNavigate = () => {
         navigate('/grocery-scanner');
     }
