@@ -36,7 +36,7 @@ const Grocery: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
     //     fetchProfileData();
     // }, []);
     const addNavigate = () => {
-        navigate('/grocery-scanner');
+        navigate('/grocery-scanner/*');
     }
 
     return (

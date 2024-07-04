@@ -38,7 +38,7 @@ const App: React.FC = () => {
                 <Route path="/profile" element={<Profile setMenuVisible={setMenuVisible}/>}></Route>
                 <Route path="/details" element={<DietDetails setMenuVisible={setMenuVisible}/>}/>
                 <Route path="/grocery-details" element={<GroceryDetails setMenuVisible={setMenuVisible}/>}/>
-                <Route path="/grocery-scanner" element={<QRScanPage setMenuVisible={setMenuVisible}/>}/>
+                <Route path="/grocery-scanner/*" element={<QRScanPage setMenuVisible={setMenuVisible}/>}/>
                 <Route path="/grocery-temporary" element={<GroceryTemporary setMenuVisible={setMenuVisible}/>}/>
 
             </Routes>

@@ -48,11 +48,15 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
     const [groceries, setGroceries] = useState<GroceryContainerProps["groceries"]>([]);
 
     const navigate = useNavigate();
+
+
     const reNavigate = () => {
-        navigate('/grocery-scanner')
+        setQrResponse('');
+        navigate('/grocery-scanner/*')
     }
 
     const reDirect = () => {
+        setQrResponse('');
         navigate('/grocery/*')
     }
 
@@ -66,7 +70,7 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
                     metaStringProducts
                 }
                 // SENDING QR CODE STRING + LOGIN
-                const currResponse = await fetch(`/get_temp_products`, {
+                const currResponse = await fetch(`/product/get_temp_products`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -87,7 +91,7 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
             }
         };
         fetchProfileData();
-    }, [response, qrResponse]);
+    }, []);
 
 
     return (
