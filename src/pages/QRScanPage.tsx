@@ -6,15 +6,14 @@ import {QrReader} from 'react-qr-reader';
 
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
-    const reNavigate = (result: any) => {
-        setData(result?.getText());
+    const reNavigate = () => {
         navigate('/grocery/*');
     }
 
     const [data, setData] = useState('No result')
 
     const onScanFail = (err: string | Error) => {
-        alert(err);
+        console.log(err);
     };
 
     return (
@@ -35,14 +34,15 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                     <QrReader
                         onResult={(result, error) => {
                             if (!!result) {
-                                reNavigate(result);
+                                setData(result?.getText());
                             }
                             if (!!error) {
-                                onScanFail(error);
+                                console.info(error);
                             }
                         }}
                         constraints={{facingMode: 'environment'}}
                     />
+                    <p>{data}</p>
                 </div>
             </div>
         </>
