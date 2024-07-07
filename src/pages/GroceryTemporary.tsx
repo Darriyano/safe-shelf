@@ -38,7 +38,6 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
 }
 
 const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
-    const {response, setResponse} = useResponse();
     const {groceryData, setGroceryData} = useQRResponse();
     const navigate = useNavigate();
 
