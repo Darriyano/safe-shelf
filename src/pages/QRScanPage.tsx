@@ -16,7 +16,6 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
     const {response, setResponse} = useResponse();
     const {groceryData, setGroceryData} = useQRResponse();
 
-
     const reNavigate = async (res: string) => {
         /* here making fetch to backend with login and qr data, then getting updated list and
         * sending it into the grocery temporary*/
@@ -56,6 +55,7 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
     }
 
 
+
     return (
         <>
             <HeaderPage setMenuVisible={setMenuVisible}/>
@@ -71,17 +71,17 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                     <div> Scan the QR</div>
                 </div>
                 <div className="qr-reader">
-                    <QrReader
-                        onResult={(result, error) => {
-                            if (!!result) {
-                                reNavigate(result?.getText());
-                            }
-                            if (!!error) {
-                                console.info(error);
-                            }
-                        }}
-                        constraints={{facingMode: 'environment'}}
-                    />
+                    {/*<QrReader*/}
+                    {/*    onResult={(result, error) => {*/}
+                    {/*        if (!!result) {*/}
+                    {/*            reNavigate(result?.getText()).then();*/}
+                    {/*        }*/}
+                    {/*        if (!!error) {*/}
+                    {/*            console.info(error);*/}
+                    {/*        }*/}
+                    {/*    }}*/}
+                    {/*    constraints={{facingMode: 'environment'}}*/}
+                    {/*/>*/}
                 </div>
             </div>
         </>

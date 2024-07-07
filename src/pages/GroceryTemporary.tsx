@@ -41,22 +41,22 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
     const {groceryData, setGroceryData} = useQRResponse();
     const navigate = useNavigate();
 
-    const abortController = new AbortController()
-    const signal = abortController.signal
+    // const abortController = new AbortController()
+    // const signal = abortController.signal
+    //
+    // useEffect(() => {
+    //     // Clean up on component unmount
+    //     return () => {
+    //         abortController.abort();
+    //     };
+    // }, []);
 
-    useEffect(() => {
-        // Clean up on component unmount
-        return () => {
-            abortController.abort();
-        };
-    }, []);
-
-    const reNavigate = () => {
+    const reNavigate = async () => {
         setGroceryData([]);
         navigate('/grocery-scanner/*')
     }
 
-    const reDirect = () => {
+    const reDirect = async () => {
         setGroceryData([]);
         navigate('/grocery/*')
     }

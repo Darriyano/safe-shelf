@@ -22,16 +22,6 @@ const App: React.FC = () => {
         setIsLoggedIn(loggedIn);
     };
 
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
-    useEffect(() => {
-        // Clean up on component unmount
-        return () => {
-            abortController.abort();
-        };
-    }, []);
-
     return (
         <div>
             <Routes>
