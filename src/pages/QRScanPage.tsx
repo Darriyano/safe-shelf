@@ -14,7 +14,6 @@ interface sendingQR {
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
     const {response, setResponse} = useResponse();
-
     const {groceryData, setGroceryData} = useQRResponse();
 
     const reNavigate = async (res: string) => {
