@@ -14,8 +14,8 @@ interface sendingQR {
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
     const {response, setResponse} = useResponse();
-
     const {groceryData, setGroceryData} = useQRResponse();
+
 
     const reNavigate = async (res: string) => {
         /* here making fetch to backend with login and qr data, then getting updated list and
@@ -40,7 +40,7 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
 
             if (currStatus == 200) {
                 const data = await currResponse.json();
-                setGroceryData(data)
+                console.log(data.toString())
                 navigate('/grocery-temporary');
 
             } else {

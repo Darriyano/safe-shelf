@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoginPage from "./pages/LoginPage";
 import {Navigate, Route, Routes} from "react-router-dom";
 import Diet from "./pages/Diet";
@@ -21,6 +21,16 @@ const App: React.FC = () => {
     const handleLogin = (loggedIn: boolean) => {
         setIsLoggedIn(loggedIn);
     };
+
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    useEffect(() => {
+        // Clean up on component unmount
+        return () => {
+            abortController.abort();
+        };
+    }, []);
 
     return (
         <div>
