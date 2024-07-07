@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from "react";
 import HeaderPage from "./HeaderPage";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import '../styles/tempor-groc.css'
 import {useResponse} from "./ResponseContext";
 import {useQRResponse} from "./QRResponseContext";
@@ -17,11 +17,6 @@ interface GroceryContainerProps {
         carbohydrates: number;
         date: Date;
     }[];
-}
-
-interface sendingQR {
-    login: string;
-    metaStringProducts: string;
 }
 
 const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
@@ -44,55 +39,20 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
 
 const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const {response, setResponse} = useResponse();
-    const {qrResponse, setQrResponse} = useQRResponse();
-    const [groceries, setGroceries] = useState<GroceryContainerProps["groceries"]>([]);
+    const {groceryData, setGroceryData} = useQRResponse();
 
     const navigate = useNavigate();
 
 
     const reNavigate = () => {
-        setQrResponse('');
+        setGroceryData([]);
         navigate('/grocery-scanner/*')
     }
 
     const reDirect = () => {
-        setQrResponse('');
+        setGroceryData([]);
         navigate('/grocery/*')
     }
-
-    useEffect(() => {
-        const fetchProfileData = async () => {
-            try {
-                const login = response.toString();
-                const metaStringProducts = qrResponse.toString();
-                const qrData: sendingQR = {
-                    login,
-                    metaStringProducts
-                }
-                // SENDING QR CODE STRING + LOGIN
-                const currResponse = await fetch(`/product/get_temp_products`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(qrData),
-                });
-
-                const currStatus = await currResponse.status;
-
-                if (currStatus == 200) {
-                    const data: GroceryContainerProps["groceries"] = await currResponse.json();
-                    setGroceries(data);
-                } else {
-                    throw new Error(currStatus.toString())
-                }
-            } catch (err) {
-                alert(err);
-            }
-        };
-        fetchProfileData();
-    }, []);
-
 
     return (
         <>
@@ -109,7 +69,9 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
                     <div>Save groceries</div>
                 </div>
                 <div className='groceryCards'>
-                    <CardGroceryComponent groceries={groceries}/>
+                    {groceryData.map((groceryContainer, index) => (
+                        <CardGroceryComponent key={index} groceries={groceryContainer.groceries}/>
+                    ))}
                 </div>
                 <button className='savebtn' onClick={reDirect}>Save</button>
             </div>

@@ -1,20 +1,36 @@
-import React, {createContext, useContext, useState, ReactNode} from 'react';
+import React, {createContext, useContext, useState, ReactNode, Dispatch, SetStateAction} from 'react';
 
-// Define the context type
-interface QRResponseContextType {
-    qrResponse: string;
-    setQrResponse: React.Dispatch<React.SetStateAction<string>>;
+interface Grocery {
+    id: number;
+    name: string;
+    weight: number;
+    kcal: number;
+    proteins: number;
+    fats: number;
+    carbohydrates: number;
+    date: Date;
 }
 
+interface GroceryContainerProps {
+    groceries: Grocery[];
+}
+
+// Define the context type
+interface GroceryContextType {
+    groceryData: GroceryContainerProps[];
+    setGroceryData: Dispatch<SetStateAction<GroceryContainerProps[]>>;
+}
+
+
 // Create the context with default values
-const QRResponseContext = createContext<QRResponseContextType | undefined>(undefined);
+const QRResponseContext = createContext<GroceryContextType | undefined>(undefined);
 
 // Create a provider component
 export const QRResponseProvider: React.FC<{ children: ReactNode }> = ({children}) => {
-    const [qrResponse, setQrResponse] = useState<string>('');
+    const [groceryData, setGroceryData] = useState<GroceryContainerProps[]>([]);
 
     return (
-        <QRResponseContext.Provider value={{qrResponse, setQrResponse}}>
+        <QRResponseContext.Provider value={{groceryData, setGroceryData}}>
             {children}
         </QRResponseContext.Provider>
     );
@@ -24,7 +40,7 @@ export const QRResponseProvider: React.FC<{ children: ReactNode }> = ({children}
 export const useQRResponse = () => {
     const context = useContext(QRResponseContext);
     if (!context) {
-        throw new Error('useResponse must be used within a ResponseProvider');
+        throw new Error('useQRResponce must be used within a QRResponseProvider');
     }
     return context;
 };

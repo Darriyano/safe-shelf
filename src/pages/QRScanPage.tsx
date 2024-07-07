@@ -4,29 +4,56 @@ import '../styles/qr.css'
 import {useNavigate} from "react-router-dom";
 import {QrReader} from 'react-qr-reader';
 import {useQRResponse} from "./QRResponseContext";
+import {useResponse} from "./ResponseContext";
+
+interface sendingQR {
+    login: string;
+    metaStringProducts: string;
+}
 
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
+    const {response, setResponse} = useResponse();
 
-    const {qrResponse, setQrResponse} = useQRResponse();
-    const [isQrReaderActive, setIsQrReaderActive] = useState(true);
+    const {groceryData, setGroceryData} = useQRResponse();
 
-    const reNavigate = (res: string) => {
-        setQrResponse(res);
-        setIsQrReaderActive(false);
-        navigate('/grocery-temporary');
+    const reNavigate = async (res: string) => {
+        /* here making fetch to backend with login and qr data, then getting updated list and
+        * sending it into the grocery temporary*/
+        try {
+            const login = response.toString();
+            const metaStringProducts = res.toString();
+            const qrData: sendingQR = {
+                login,
+                metaStringProducts
+            }
+            // SENDING QR CODE STRING + LOGIN
+            const currResponse = await fetch(`/product/get_temp_products`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(qrData),
+            });
+
+            const currStatus = await currResponse.status;
+
+            if (currStatus == 200) {
+                const data = await currResponse.json();
+                setGroceryData(data)
+                navigate('/grocery-temporary');
+
+            } else {
+                throw new Error(currStatus.toString())
+            }
+        } catch (err) {
+            alert(err);
+        }
     }
 
     const reDirect = () => {
-        setIsQrReaderActive(false);
         navigate('/grocery/*');
     }
-
-    useEffect(() => {
-        return () => {
-            setIsQrReaderActive(true); // Turn off the QR camera when the component unmounts
-        };
-    }, []);
 
 
     return (
@@ -44,7 +71,6 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                     <div> Scan the QR</div>
                 </div>
                 <div className="qr-reader">
-                    {isQrReaderActive && (
                     <QrReader
                         onResult={(result, error) => {
                             if (!!result) {
@@ -55,8 +81,7 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                             }
                         }}
                         constraints={{facingMode: 'environment'}}
-                    />)}
-                    {/*<p>{data}</p>*/}
+                    />
                 </div>
             </div>
         </>
