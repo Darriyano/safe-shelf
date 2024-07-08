@@ -1,48 +1,39 @@
-import React, {FC, useEffect} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
-import {useQRResponse} from './QRResponseContext'; // Ensure correct import path
+import React, {FC, useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import HeaderPage from "./HeaderPage";
-import {useResponse} from "./ResponseContext";
+import grocery from "./Grocery";
 
-
-interface Grocery {
-    id: number;
-    name: string;
-    weight: number;
-    kcal: number;
-    proteins: number;
-    fats: number;
-    carbohydrates: number;
-    date: Date;
+interface newGroceries {
+    login: string,
+    products: {
+        id: number;
+        name: string;
+        weight: number;
+        kcal: number;
+        proteins: number;
+        fats: number;
+        carbohydrates: number;
+        date: string;
+    }[];
 }
 
 interface GroceryContainerProps {
-    groceries: Grocery[];
+    groceries: {
+        id: number;
+        name: string;
+        weight: number;
+        kcal: number;
+        proteins: number;
+        fats: number;
+        carbohydrates: number;
+        date: string;
+    }[];
 }
 
-// TEST DATA
-// const data: Grocery[] = [
-//     {
-//         "id": 1,
-//         "name": "Apple",
-//         "weight": 150,
-//         "kcal": 52,
-//         "proteins": 0.3,
-//         "fats": 0.2,
-//         "carbohydrates": 14,
-//         "date": new Date(2024, 11, 11)
-//     },
-//     {
-//         "id": 2,
-//         "name": "Banana",
-//         "weight": 118,
-//         "kcal": 105,
-//         "proteins": 1.3,
-//         "fats": 0.3,
-//         "carbohydrates": 27,
-//         "date": new Date(2024, 11, 11)
-//     }
-// ]
+interface sendingQR {
+    login: string | null | undefined;
+    metaStringProducts: string | null | undefined;
+}
 
 const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
     return (
@@ -61,7 +52,7 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
                     <h3>Fats: {grocery.fats}</h3>
                     <h3>Carbohydrates: {grocery.carbohydrates}</h3>
                     <h3>Proteins: {grocery.proteins}</h3>
-                    <h3>Expiration: {grocery.date.toLocaleString()}</h3>
+                    <h3>Expiration: {grocery.date}</h3>
                 </div>
             ))}
         </>
@@ -69,37 +60,44 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
 };
 
 const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
-    const {groceryData, setGroceryData} = useQRResponse();
+    // const {groceryData, setGroceryData} = useQRResponse();
+    const [groceries, setGroceries] = useState<GroceryContainerProps["groceries"]>([]);
     const navigate = useNavigate();
-    const {stringValue} = useParams(); // for getting login from page
-    const {response, setResponse} = useResponse();
-
-    // TODO: check first part of it inside LogiPage - saving Login without Hooks
-    // const login = sessionStorage.getItem('userLogin')
-
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 // Check endpoint??? IDK but what's happening here XD
-                const currResponse = await fetch(`/product/get_temp_products`);
-                const data: Grocery[] = await currResponse.json();
+                const login = sessionStorage.getItem('userLogin');
+                const metaStringProducts = sessionStorage.getItem('qrValue');
 
-                const groceryContainer: GroceryContainerProps = {
-                    groceries: data.map(item => ({
-                        ...item,
-                        date: new Date(item.date)
-                    }))
-                };
+                const qrData: sendingQR = {
+                    login,
+                    metaStringProducts
+                }
+                // SENDING QR CODE STRING + LOGIN
+                const currResponse = await fetch(`/product/get_temp_products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(qrData),
+                });
 
-                const transformedData: GroceryContainerProps[][] = [[groceryContainer]];
-                setGroceryData(transformedData);
+                const currStatus = currResponse.status;
+                if (currStatus === 200) {
+                    const data: GroceryContainerProps["groceries"] = await currResponse.json();
+                    setGroceries(data);
+                } else {
+                    console.error(currResponse.statusText);
+                }
+
             } catch (error) {
                 console.error('Error fetching data:', error);
                 // Handle error as needed
             }
         };
-        fetchData(); // Call the async function immediately
+        fetchData().then(); // Call the async function immediately
     }, []); // Empty dependency array to run this effect only once on component mount
 
 
@@ -107,14 +105,39 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
         alert("Currently stopped")
         // setGroceryData([]);
         // navigate('/grocery-scanner/*', {replace: true});
-        // window.location.reload()
     };
 
-    const reDirect = () => {
-        alert("Currently stopped for maintenance")
-        // setGroceryData([]);
-        // navigate('/grocery/*', {replace: true});
-        // window.location.reload()
+    const reDirect = async () => {
+        try {
+            let login = sessionStorage.getItem('userLogin');
+            if (!login) {
+                login = ''
+            }
+            const products = groceries;
+            const sendingGrocData: newGroceries = {
+                login,
+                products
+            }
+            const currResponse = await fetch(`/product/save`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(sendingGrocData),
+            });
+            const currStatus = currResponse.status;
+            if (currStatus === 200) {
+                console.log("Successfully")
+                navigate('/grocery/*', {replace: true});
+                window.location.reload()
+            } else {
+                throw new Error("ERROR")
+            }
+
+        } catch (err) {
+            console.warn(err);
+        }
+        window.location.reload()
     };
 
     return (
@@ -133,9 +156,7 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
                     <div>Save groceries</div>
                 </div>
                 <div className="groceryCards">
-                    {groceryData.flat().map((groceryContainer, index) => (
-                        <CardGroceryComponent key={index} groceries={groceryContainer.groceries}/>
-                    ))}
+                    <CardGroceryComponent groceries={groceries}/>
                 </div>
                 <button className="savebtn" onClick={reDirect}>Save</button>
             </div>

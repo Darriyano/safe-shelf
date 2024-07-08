@@ -3,47 +3,16 @@ import HeaderPage from "./HeaderPage";
 import '../styles/qr.css'
 import {useNavigate} from "react-router-dom";
 import {QrReader} from 'react-qr-reader';
-import {useQRResponse, GroceryContainerProps, Grocery} from "./QRResponseContext";
-import {useResponse} from "./ResponseContext";
 
-interface sendingQR {
-    login: string;
-    metaStringProducts: string;
-}
 
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
-    const {response, setResponse} = useResponse();
 
-    const reNavigate = async (res: string) => {
+    const reNavigate = (res: string) => {
         /* here making fetch to backend with login and qr data, then getting updated list and
         * sending it into the grocery temporary*/
-        try {
-            const login = response.toString();
-            const metaStringProducts = res.toString();
-
-            const qrData: sendingQR = {
-                login,
-                metaStringProducts
-            }
-
-            // SENDING QR CODE STRING + LOGIN
-            const currResponse = await fetch(`/product/get_temp_products`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(qrData),
-            });
-
-            const currStatus = await currResponse.status;
-
-            if (currStatus != 200) {
-                throw new Error(currStatus.toString())
-            }
-        } catch (err) {
-            alert(err);
-        }
+            sessionStorage.setItem('qrValue', res.toString());
+            return;
     }
 
     const reDirect = () => {
@@ -70,7 +39,7 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                     <QrReader
                         onResult={(result, error) => {
                             if (!!result) {
-                                reNavigate(result?.getText()).then();
+                                reNavigate(result?.getText());
                                 navigate('/grocery-temporary', {replace: true});
                                 window.location.reload()
                             }
