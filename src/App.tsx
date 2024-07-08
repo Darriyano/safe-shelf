@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import LoginPage from "./pages/LoginPage";
 import {Navigate, Route, Routes} from "react-router-dom";
 import Diet from "./pages/Diet";
