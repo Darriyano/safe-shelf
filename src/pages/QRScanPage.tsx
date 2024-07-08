@@ -3,7 +3,7 @@ import HeaderPage from "./HeaderPage";
 import '../styles/qr.css'
 import {useNavigate} from "react-router-dom";
 import {QrReader} from 'react-qr-reader';
-import {useQRResponse} from "./QRResponseContext";
+import {useQRResponse, GroceryContainerProps, Grocery} from "./QRResponseContext";
 import {useResponse} from "./ResponseContext";
 
 interface sendingQR {
@@ -22,10 +22,12 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
         try {
             const login = response.toString();
             const metaStringProducts = res.toString();
+
             const qrData: sendingQR = {
                 login,
                 metaStringProducts
             }
+
             // SENDING QR CODE STRING + LOGIN
             const currResponse = await fetch(`/product/get_temp_products`, {
                 method: 'POST',
@@ -38,10 +40,19 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
             const currStatus = await currResponse.status;
 
             if (currStatus == 200) {
-                const data = await currResponse.json();
-                setGroceryData(data)
-                navigate('/grocery-temporary');
+                const data: Grocery[] = await currResponse.json();
+                const groceryContainer: GroceryContainerProps = {
+                    groceries: data.map(item => ({
+                        ...item,
+                        date: new Date(item.date) // Ensure date is a Date object
+                    }))
+                };
 
+                const transformedData: GroceryContainerProps[][] = [[groceryContainer]];
+
+                setGroceryData(transformedData);
+                // const data: GroceryContainerProps[][] = await currResponse.json();
+                // setGroceryData(data)
             } else {
                 throw new Error(currStatus.toString())
             }
@@ -52,6 +63,7 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
 
     const reDirect = () => {
         navigate('/grocery/*');
+        window.location.reload()
     }
 
 
@@ -73,7 +85,9 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                     <QrReader
                         onResult={(result, error) => {
                             if (!!result) {
-                                reNavigate(result?.getText());
+                                reNavigate(result?.getText()).then();
+                                navigate('/grocery-temporary', {replace: true});
+                                window.location.reload()
                             }
                             if (!!error) {
                                 console.info(error);
