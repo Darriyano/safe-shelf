@@ -51,8 +51,11 @@ const LoginPage: FC<LoginPageProps> = ({onChange, setResponse}) => {
                 /* Все nice и мы ставим в качестве внутреннего ID логин юзера
                 * Нужен ли тут вообще какой-то JSON или нет? Как по мне нет, и так все супер */
                 setResponse(login);
+                sessionStorage.setItem('userLogin', login);
                 onChange(true)
             } else if (currentStatus >= 400) {
+                setResponse(login);
+                sessionStorage.setItem('userLogin', login);
                 /* Значит какой-то кринж и мы этот кринж обрабатываем */
                 const badRequest: statusResponse400 = await sending.json();
                 const stringError: string = badRequest.description;

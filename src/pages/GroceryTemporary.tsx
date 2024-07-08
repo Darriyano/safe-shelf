@@ -1,7 +1,8 @@
-import React, {FC} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, {FC, useEffect} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
 import {useQRResponse} from './QRResponseContext'; // Ensure correct import path
 import HeaderPage from "./HeaderPage";
+import {useResponse} from "./ResponseContext";
 
 
 interface Grocery {
@@ -19,12 +20,42 @@ interface GroceryContainerProps {
     groceries: Grocery[];
 }
 
+// TEST DATA
+// const data: Grocery[] = [
+//     {
+//         "id": 1,
+//         "name": "Apple",
+//         "weight": 150,
+//         "kcal": 52,
+//         "proteins": 0.3,
+//         "fats": 0.2,
+//         "carbohydrates": 14,
+//         "date": new Date(2024, 11, 11)
+//     },
+//     {
+//         "id": 2,
+//         "name": "Banana",
+//         "weight": 118,
+//         "kcal": 105,
+//         "proteins": 1.3,
+//         "fats": 0.3,
+//         "carbohydrates": 27,
+//         "date": new Date(2024, 11, 11)
+//     }
+// ]
+
 const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
     return (
         <>
             {groceries.map((grocery, index) => (
                 <div key={index} className="grocery-display">
-                    <h2>{grocery.name}</h2>
+                    <div className="groceryHeader">{grocery.name}
+                        <svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M0.785714 12.4444C0.785714 12.857 0.951275 13.2527 1.24597 13.5444C1.54067 13.8361 1.94037 14 2.35714 14H8.64286C9.05963 14 9.45932 13.8361 9.75402 13.5444C10.0487 13.2527 10.2143 12.857 10.2143 12.4444V3.11111H0.785714V12.4444ZM2.35714 4.66667H8.64286V12.4444H2.35714V4.66667ZM8.25 0.777778L7.46429 0H3.53571L2.75 0.777778H0V2.33333H11V0.777778H8.25Z"
+                                fill="#FF5A5A"/>
+                        </svg>
+                    </div>
                     <h3>Weight: {grocery.weight}</h3>
                     <h3>Kcal: {grocery.kcal}</h3>
                     <h3>Fats: {grocery.fats}</h3>
@@ -40,15 +71,50 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
 const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const {groceryData, setGroceryData} = useQRResponse();
     const navigate = useNavigate();
+    const {stringValue} = useParams(); // for getting login from page
+    const {response, setResponse} = useResponse();
+
+    // TODO: check first part of it inside LogiPage - saving Login without Hooks
+    // const login = sessionStorage.getItem('userLogin')
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                // Check endpoint??? IDK but what's happening here XD
+                const currResponse = await fetch(`/product/get_temp_products`);
+                const data: Grocery[] = await currResponse.json();
+
+                const groceryContainer: GroceryContainerProps = {
+                    groceries: data.map(item => ({
+                        ...item,
+                        date: new Date(item.date)
+                    }))
+                };
+
+                const transformedData: GroceryContainerProps[][] = [[groceryContainer]];
+                setGroceryData(transformedData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                // Handle error as needed
+            }
+        };
+        fetchData(); // Call the async function immediately
+    }, []); // Empty dependency array to run this effect only once on component mount
+
 
     const reNavigate = () => {
-        setGroceryData([]);
-        navigate('/grocery-scanner/*');
+        alert("Currently stopped")
+        // setGroceryData([]);
+        // navigate('/grocery-scanner/*', {replace: true});
+        // window.location.reload()
     };
 
     const reDirect = () => {
-        setGroceryData([]);
-        navigate('/grocery/*');
+        alert("Currently stopped for maintenance")
+        // setGroceryData([]);
+        // navigate('/grocery/*', {replace: true});
+        // window.location.reload()
     };
 
     return (
