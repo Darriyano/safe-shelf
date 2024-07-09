@@ -39,17 +39,6 @@
     object-fit: cover;
 }
 
-.groceryHeader {
-    font-family: "Roboto", sans-serif;
-    font-size: 25px;
-    color: #4D544B;
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10px;
-}
 
 /*.qr-reader .qr-box {*/
 /*    width: 100% !important;*/

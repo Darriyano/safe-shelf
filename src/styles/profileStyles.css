@@ -1,6 +1,7 @@
 .pageContainer {
     width: 100vw;
     display: flex;
+    flex-direction: column;
     justify-content: center;
 
 }
@@ -45,6 +46,7 @@ h1 {
     padding-top: 10px;
     padding-bottom: 11px;
     padding-left: 19px;
+    margin-bottom: 30px;
 }
 
 .inputs label {
@@ -67,8 +69,7 @@ h1 {
 }
 
 .buttons {
-    position: fixed;
-    bottom: 20px;
+    /*bottom: 10px;*/
     display: flex;
     justify-content: center; /* Выравнивание кнопок внутри контейнера по центру */
     width: 100vw; /* Чтобы контейнер занимал всю ширину экрана */
@@ -84,6 +85,7 @@ h1 {
 }
 
 .edit {
+    background-color: #FFF;
     border: 1px solid #D51A1A;
 }
 

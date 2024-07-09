@@ -1,7 +1,10 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import HeaderPage from "./HeaderPage";
-import grocery from "./Grocery";
+import '../styles/groceryTemporary.css'
+import {useIndex} from "./IndicesHook";
+import {useDate} from "./DatesHook";
+
 
 interface newGroceries {
     login: string,
@@ -36,23 +39,76 @@ interface sendingQR {
 }
 
 const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
+    const {indicesArray, setArray} = useIndex();
+    const {datesDict, setDict} = useDate();
+
+    const [groceryDates, setGroceryDates] = useState(groceries.map(g => g.date));
+    const [crossedItems, setCrossedItems] = useState<number[]>([]);
+
+
+    const clickedComponent = (index: number) => {
+        // HERE WILL SAVE THE CURRENT CLICKED ID TO DELETE
+        const currentIndexes = [...indicesArray];
+        if (currentIndexes.includes(index)) {
+            currentIndexes.splice(currentIndexes.indexOf(index), 1);
+        } else {
+            currentIndexes.push(index);
+        }
+        setArray(currentIndexes);
+
+        // Array of crossed items to handle
+        setCrossedItems(prevItems => {
+            if (prevItems.includes(index)) {
+                return prevItems.filter(item => item !== index);
+            } else {
+                return [...prevItems, index];
+            }
+        });
+    }
+
+    const changedDateComponent = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        // HERE WILL SAVE THE CURRENT CLICKED ID TO DELETE
+        const newDate = event.target.value;
+        datesDict[index] = newDate;
+        setDict(datesDict);
+        // Update the date in state
+        // const newGroceryDates = [...groceryDates];
+        // newGroceryDates[index] = newDate;
+        // setGroceryDates(newGroceryDates);
+    }
+
+    const isClicked = (index: number) => {
+        return crossedItems.includes(index);
+    };
+
     return (
         <>
             {groceries.map((grocery, index) => (
-                <div key={index} className="grocery-display">
-                    <div className="groceryHeader">{grocery.name}
-                        <svg width="11" height="14" viewBox="0 0 11 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M0.785714 12.4444C0.785714 12.857 0.951275 13.2527 1.24597 13.5444C1.54067 13.8361 1.94037 14 2.35714 14H8.64286C9.05963 14 9.45932 13.8361 9.75402 13.5444C10.0487 13.2527 10.2143 12.857 10.2143 12.4444V3.11111H0.785714V12.4444ZM2.35714 4.66667H8.64286V12.4444H2.35714V4.66667ZM8.25 0.777778L7.46429 0H3.53571L2.75 0.777778H0V2.33333H11V0.777778H8.25Z"
-                                fill="#FF5A5A"/>
-                        </svg>
+                <div key={index} className={`grocery-display ${isClicked(grocery.id) ? 'clicked' : ''}`}>
+                    <div className="groceryHeader"><span
+                        style={{textDecoration: crossedItems.includes(index) ? 'line-through' : 'none'}}>{grocery.name} </span>
+                        <div className="clickable-icon" onClick={() => clickedComponent(grocery.id)}>
+                            <svg width="20" height="23" viewBox="0 0 11 14" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M0.785714 12.4444C0.785714 12.857 0.951275 13.2527 1.24597 13.5444C1.54067 13.8361 1.94037 14 2.35714 14H8.64286C9.05963 14 9.45932 13.8361 9.75402 13.5444C10.0487 13.2527 10.2143 12.857 10.2143 12.4444V3.11111H0.785714V12.4444ZM2.35714 4.66667H8.64286V12.4444H2.35714V4.66667ZM8.25 0.777778L7.46429 0H3.53571L2.75 0.777778H0V2.33333H11V0.777778H8.25Z"
+                                    fill="#FF5A5A"/>
+                            </svg>
+                        </div>
                     </div>
-                    <h3>Weight: {grocery.weight}</h3>
-                    <h3>Kcal: {grocery.kcal}</h3>
-                    <h3>Fats: {grocery.fats}</h3>
-                    <h3>Carbohydrates: {grocery.carbohydrates}</h3>
-                    <h3>Proteins: {grocery.proteins}</h3>
-                    <h3>Expiration: {grocery.date}</h3>
+                    <div className="grocery-position">Weight: <b>{grocery.weight}</b></div>
+                    <div className="grocery-position">Kcal: <b>{grocery.kcal}</b></div>
+                    <div className="grocery-position">Fats: <b>{grocery.fats}</b></div>
+                    <div className="grocery-position">Carbohydrates: <b>{grocery.carbohydrates}</b></div>
+                    <div className="grocery-position">Proteins: <b>{grocery.proteins}</b></div>
+                    <div className="grocery-position">Expiration: <input
+                        type="date"
+                        className="expiration-date"
+                        id="date-${grocery.id}"
+                        defaultValue={grocery.date}
+                        value={groceryDates[grocery.id]}
+                        onChange={(event) => changedDateComponent(event, grocery.id)}
+                    /></div>
                 </div>
             ))}
         </>
@@ -62,6 +118,11 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
 const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     // const {groceryData, setGroceryData} = useQRResponse();
     const [groceries, setGroceries] = useState<GroceryContainerProps["groceries"]>([]);
+    // Array of clicked indices to remove
+    const {indicesArray, setArray} = useIndex();
+    const {datesDict, setDict} = useDate();
+
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -108,16 +169,37 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
     };
 
     const reDirect = async () => {
+        //TODO: HERE WERE GOING THROUGH THE groceries AND DELETING ALL FROM indicesArray
+        // TODO: +GOING THROUGH DATES+INDICES AND CHANGING DATES TO PROVIDED ONES
+
+        const products: any = [];
+
+        for (let i = 0; i < groceries.length; i++) {
+            if (i in datesDict) {
+                groceries[i].date = datesDict[i];
+            }
+        }
+
+        for (let i = 0; i < groceries.length; i++) {
+            if (!indicesArray.includes(groceries[i].id)) {
+                products.push(groceries[i]);
+            }
+        }
+
+
         try {
             let login = sessionStorage.getItem('userLogin');
             if (!login) {
                 login = ''
             }
-            const products = groceries;
+            //TODO: HERE CHANGING groceries INTO THE NEW ARRAY PROVIDED FROM STATES
+            // const products = groceries;
+
             const sendingGrocData: newGroceries = {
                 login,
                 products
             }
+
             const currResponse = await fetch(`/product/save`, {
                 method: 'POST',
                 headers: {
@@ -127,9 +209,8 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
             });
             const currStatus = currResponse.status;
             if (currStatus === 200) {
-                console.log("Successfully")
                 navigate('/grocery/*', {replace: true});
-                window.location.reload()
+                // window.location.reload()
             } else {
                 throw new Error("ERROR")
             }
@@ -137,7 +218,6 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
         } catch (err) {
             console.warn(err);
         }
-        window.location.reload()
     };
 
     return (
@@ -158,7 +238,7 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
                 <div className="groceryCards">
                     <CardGroceryComponent groceries={groceries}/>
                 </div>
-                <button className="savebtn" onClick={reDirect}>Save</button>
+                <button className="savebutn" onClick={reDirect}>Save</button>
             </div>
         </>
     );

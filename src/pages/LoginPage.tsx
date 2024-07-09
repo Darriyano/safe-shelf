@@ -89,7 +89,7 @@ const LoginPage: FC<LoginPageProps> = ({onChange, setResponse}) => {
                 <button onClick={handleChange} className='login-btn'>Log in</button>
             </div>
             <div className='text'>Have no account?</div>
-            <button className='sign-btn' onClick={goToSignPage}>Sign in</button>
+            <button className='sign-btn' onClick={goToSignPage}>Sign up</button>
         </div>
     )
 }

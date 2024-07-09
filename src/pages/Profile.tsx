@@ -10,6 +10,7 @@ interface ProfileData {
     surname: string;
     age: number;
     sex: string;
+    lifestyle: string;
 }
 
 interface UpdatingData {
@@ -20,6 +21,7 @@ interface UpdatingData {
     password: string;
     age: number;
     sex: string;
+    lifestyle: string;
 }
 
 interface statusResponse400 {
@@ -40,7 +42,18 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
     const [currentSurname, setCurrentSurname] = useState<string>();
     const [currentAge, setCurrentAge] = useState<number>();
     const [currentSex, setCurrentSex] = useState<string>();
+    const [currentLifestyle, setCurrentLifestyle] = useState<string>();
     const [disabled, setDisabled] = useState(true);
+
+    const lifeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value;
+        setCurrentLifestyle(value);
+    };
+
+    const sexChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value;
+        setCurrentSex(value);
+    };
 
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -54,6 +67,7 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 setCurrentSex(data.sex);
                 setCurrentSurname(data.surname);
                 setCurrentName(data.name)
+                setCurrentLifestyle(data.lifestyle)
             } catch (err) {
                 alert(err);
             } finally {
@@ -71,6 +85,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
         const surname = (document.getElementById('surname') as HTMLInputElement).value;
         const age = Number((document.getElementById('age') as HTMLInputElement).value);
         const sex = (document.getElementById('gender') as HTMLSelectElement).value;
+        const lifestyle = (document.getElementById('lifestyle') as HTMLSelectElement).value;
+
 
         const updatedProfile: UpdatingData = {
             oldLogin,
@@ -79,7 +95,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
             surname,
             password,
             age,
-            sex
+            sex,
+            lifestyle
         }
 
         try {
@@ -100,6 +117,7 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 setCurrentSex(data.sex);
                 setCurrentSurname(data.surname);
                 setCurrentName(data.name)
+                setCurrentLifestyle(data.lifestyle)
                 setResponse(login);
                 setDisabled(true);
 
@@ -146,10 +164,30 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                            disabled={disabled} required/>
 
                     <label htmlFor="gender">Gender:</label>
-                    <select id="gender" name="gender" value={currentSex} disabled={disabled} required>
+                    <select id="gender" name="gender" value={currentSex} disabled={disabled} onChange={sexChange}
+                            required>
                         <option value="">Select gender</option>
                         <option value="M">Male</option>
                         <option value="F">Female</option>
+                    </select>
+
+                    <label htmlFor="lifestyle">Lifestyle:</label>
+                    <select id="lifestyle" name="lifestyle" value={currentLifestyle} disabled={disabled}
+                            onChange={lifeChange} required>
+                        <option value=""></option>
+                        <option value="Office worker">Office worker</option>
+                        <option value="Sedentary work, light fitness">Sedentary work, light fitness</option>
+                        <option value="Sedentary work, intense sports">Sedentary work, intense sports</option>
+                        <option value="Work on feet (without lifting heavy weights)">Work on feet (without lifting heavy
+                            weights)
+                        </option>
+                        <option value="Work on feet (without lifting heavy weights), 3 times a week intense sport">Work
+                            on
+                            feet (without lifting heavy weights), 3 times a week intense sport
+                        </option>
+                        <option value="Daily trainings\Work associated with physical activity">Daily trainings\Work
+                            associated with physical activity
+                        </option>
                     </select>
                 </div>
                 <div className="buttons">

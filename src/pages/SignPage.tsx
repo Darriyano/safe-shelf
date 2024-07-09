@@ -1,5 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import '../styles/signer.css'
+import {useState} from "react";
 
 interface signData {
     login: string;
@@ -8,6 +9,7 @@ interface signData {
     surname: string;
     age: number;
     sex: string;
+    lifestyle: string;
 }
 
 interface statusResponse400 {
@@ -27,13 +29,16 @@ const SignPage = () => {
         const surname = (document.getElementById('surname') as HTMLInputElement).value;
         const age = Number((document.getElementById('age') as HTMLInputElement).value);
         const sex = (document.getElementById('gender') as HTMLSelectElement).value;
+        const lifestyle = (document.getElementById('lifestyle') as HTMLSelectElement).value;
+
         const signed: signData = {
             login,
             password,
             name,
             surname,
             age,
-            sex
+            sex,
+            lifestyle
         }
 
         try {
@@ -91,7 +96,23 @@ const SignPage = () => {
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                 </select>
-                <button onClick={handleSignIn} className='signbtn'>Sign in</button>
+                <label htmlFor="lifestyle">Lifestyle:</label>
+                <select id="lifestyle" name="lifestyle" required>
+                    <option value=""></option>
+                    <option value="Office worker">Office worker</option>
+                    <option value="Sedentary work, light fitness">Sedentary work, light fitness</option>
+                    <option value="Sedentary work, intense sports">Sedentary work, intense sports</option>
+                    <option value="Work on feet (without lifting heavy weights)">Work on feet (without lifting heavy
+                        weights)
+                    </option>
+                    <option value="Work on feet (without lifting heavy weights), 3 times a week intense sport">Work on
+                        feet (without lifting heavy weights), 3 times a week intense sport
+                    </option>
+                    <option value="Daily trainings\Work associated with physical activity">Daily trainings\Work
+                        associated with physical activity
+                    </option>
+                </select>
+                <button onClick={handleSignIn} className='signbtn'>Sign up</button>
             </div>
         </div>
     );

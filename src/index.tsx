@@ -4,6 +4,8 @@ import './styles/index.css';
 import {BrowserRouter} from "react-router-dom";
 import App from './App';
 import {ResponseProvider} from "./pages/ResponseContext";
+import {IndexProvider} from "./pages/IndicesHook";
+import {DateProvider} from "./pages/DatesHook";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -11,10 +13,14 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
-            <ResponseProvider>
-                <BrowserRouter>
-                    <App/>
-                </BrowserRouter>
-            </ResponseProvider>
+        <DateProvider>
+            <IndexProvider>
+                <ResponseProvider>
+                    <BrowserRouter>
+                        <App/>
+                    </BrowserRouter>
+                </ResponseProvider>
+            </IndexProvider>
+        </DateProvider>
     </React.StrictMode>
 );

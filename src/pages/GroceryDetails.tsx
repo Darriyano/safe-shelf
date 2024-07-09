@@ -57,7 +57,7 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
                     onChange={handleDateChange}
                 />
             </div>
-            <div className='buttons'>
+            <div className='buttons-del'>
                 <button className='fixed-button delete'>Delete</button>
                 <button className='fixed-button save'>Save</button>
             </div>

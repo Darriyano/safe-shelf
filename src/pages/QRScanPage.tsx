@@ -45,6 +45,10 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                             }
                             if (!!error) {
                                 console.info(error);
+                                // TODO: REMOVE AFTER TESTING
+                                reNavigate("t=20240618T2210&s=1520.75&fn=7284440700519168&i=56907&fp=3071248932&n=1");
+                                navigate('/grocery-temporary', {replace: true});
+                                window.location.reload()
                             }
                         }}
                         constraints={{facingMode: 'environment'}}
