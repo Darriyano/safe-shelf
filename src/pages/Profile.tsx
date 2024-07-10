@@ -102,8 +102,9 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
         if (!oldLogin) {
             oldLogin = "";
         }
+
         const login = (document.getElementById('mail') as HTMLInputElement).value;
-        const password = (document.getElementById('new-password') as HTMLInputElement).value;
+        let password = (document.getElementById('new-password') as HTMLInputElement).value;
         const name = (document.getElementById('name') as HTMLInputElement).value;
         const surname = (document.getElementById('surname') as HTMLInputElement).value;
         const height = Number((document.getElementById('height') as HTMLInputElement).value);
@@ -112,6 +113,10 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
         const sex = (document.getElementById('gender') as HTMLSelectElement).value;
         const lifestyle = (document.getElementById('lifestyle') as HTMLSelectElement).value;
         const goal = (document.getElementById('goal') as HTMLSelectElement).value;
+
+        if (!password) {
+            password = "";
+        }
 
         const updatedProfile: UpdatingData = {
             oldLogin,
