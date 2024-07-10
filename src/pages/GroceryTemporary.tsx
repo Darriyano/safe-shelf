@@ -45,7 +45,6 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
     const [groceryDates, setGroceryDates] = useState(groceries.map(g => g.date));
     const [crossedItems, setCrossedItems] = useState<number[]>([]);
 
-
     const clickedComponent = (index: number) => {
         // HERE WILL SAVE THE CURRENT CLICKED ID TO DELETE
         const currentIndexes = [...indicesArray];
@@ -68,8 +67,7 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
 
     const changedDateComponent = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
         // HERE WILL SAVE THE CURRENT CLICKED ID TO DELETE
-        const newDate = event.target.value;
-        datesDict[index] = newDate;
+        datesDict[index] = event.target.value;
         setDict(datesDict);
         // Update the date in state
         // const newGroceryDates = [...groceryDates];
@@ -161,11 +159,9 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
         fetchData().then(); // Call the async function immediately
     }, []); // Empty dependency array to run this effect only once on component mount
 
-
     const reNavigate = () => {
-        alert("Currently stopped")
-        // setGroceryData([]);
-        // navigate('/grocery-scanner/*', {replace: true});
+        navigate('/grocery-scanner/*', {replace: true});
+        window.location.reload()
     };
 
     const reDirect = async () => {
@@ -210,7 +206,7 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
             const currStatus = currResponse.status;
             if (currStatus === 200) {
                 navigate('/grocery/*', {replace: true});
-                // window.location.reload()
+                window.location.reload()
             } else {
                 throw new Error("ERROR")
             }

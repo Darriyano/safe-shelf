@@ -1,9 +1,8 @@
-import {FC, useEffect, useRef, useState} from "react";
+import {FC} from "react";
 import HeaderPage from "./HeaderPage";
 import '../styles/qr.css'
 import {useNavigate} from "react-router-dom";
 import {QrReader} from 'react-qr-reader';
-
 
 const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const navigate = useNavigate();
@@ -11,13 +10,13 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
     const reNavigate = (res: string) => {
         /* here making fetch to backend with login and qr data, then getting updated list and
         * sending it into the grocery temporary*/
-            sessionStorage.setItem('qrValue', res.toString());
-            return;
+        sessionStorage.setItem('qrValue', res.toString());
+        return;
     }
 
     const reDirect = () => {
-        // navigate('/grocery/*');
-        // window.location.reload()
+        navigate('/grocery/*', {replace: true});
+        window.location.reload()
     }
 
 
@@ -46,9 +45,9 @@ const QRScanPage: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenu
                             if (!!error) {
                                 console.info(error);
                                 // TODO: REMOVE AFTER TESTING
-                                reNavigate("t=20240618T2210&s=1520.75&fn=7284440700519168&i=56907&fp=3071248932&n=1");
-                                navigate('/grocery-temporary', {replace: true});
-                                window.location.reload()
+                                // reNavigate("t=20240618T2210&s=1520.75&fn=7284440700519168&i=56907&fp=3071248932&n=1");
+                                // navigate('/grocery-temporary', {replace: true});
+                                // window.location.reload()
                             }
                         }}
                         constraints={{facingMode: 'environment'}}

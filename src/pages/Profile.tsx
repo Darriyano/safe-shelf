@@ -58,8 +58,13 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                const currResponse = await fetch(`/account/${response.toString()}`);
+                let userLogin = sessionStorage.getItem('userLogin')
+                if (!userLogin) {
+                    userLogin = "";
+                }
+                const currResponse = await fetch(`/account/${userLogin.toString()}`);
                 const data: ProfileData = await currResponse.json();
+                console.log(data.lifestyle)
                 // setProfileData(data);
                 setCurrentMail(data.login)
                 setCurrentAge(Number(data.age));
@@ -73,7 +78,7 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
             } finally {
             }
         };
-        fetchProfileData();
+        fetchProfileData().then();
     }, []);
 
     // For now is useless
@@ -109,6 +114,7 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 body: JSON.stringify(updatedProfile),
             });
             const currentStatus = currResponse.status;
+
             if (currentStatus === 200) {
                 const data = await currResponse.json();
                 setCurrentMail(data.login)
@@ -118,7 +124,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 setCurrentSurname(data.surname);
                 setCurrentName(data.name)
                 setCurrentLifestyle(data.lifestyle)
-                setResponse(login);
+                // setResponse(login);
+                sessionStorage.setItem('userLogin', data.login);
                 setDisabled(true);
 
             } else if (currentStatus >= 400) {
