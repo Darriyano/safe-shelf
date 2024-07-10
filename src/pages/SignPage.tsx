@@ -42,6 +42,11 @@ const SignPage = () => {
         }
 
         try {
+            if (!login || !password || !name || !surname || !age) {
+                alert("Data cannot be empty!");
+                throw new Error("Data cannot be empty!");
+            }
+
             const sending = await fetch("/account/register", {
                 method: 'POST',
                 headers: {
@@ -92,13 +97,11 @@ const SignPage = () => {
 
                 <label htmlFor="gender">Gender:</label>
                 <select id="gender" name="gender" required>
-                    <option value=""></option>
                     <option value="M">Male</option>
                     <option value="F">Female</option>
                 </select>
                 <label htmlFor="lifestyle">Lifestyle:</label>
                 <select id="lifestyle" name="lifestyle" required>
-                    <option value=""></option>
                     <option value="Office worker">Office worker</option>
                     <option value="Sedentary work, light fitness">Sedentary work, light fitness</option>
                     <option value="Sedentary work, intense sports">Sedentary work, intense sports</option>

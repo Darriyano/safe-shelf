@@ -134,6 +134,7 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
                     login,
                     metaStringProducts
                 }
+
                 // SENDING QR CODE STRING + LOGIN
                 const currResponse = await fetch(`/product/get_temp_products`, {
                     method: 'POST',
