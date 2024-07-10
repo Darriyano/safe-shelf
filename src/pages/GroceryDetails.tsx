@@ -52,8 +52,10 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
                 login,
                 productID,
             }
-            const currResponse = await fetch(``, {
-                method: 'POST',
+
+            // console.log(dateToDelete)
+            const currResponse = await fetch(`/product/delete`, {
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -61,18 +63,16 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
             });
 
             const currStatus = currResponse.status;
+
             if (currStatus == 200) {
                 navigate('/grocery/*', {replace: true});
                 window.location.reload();
             } else {
                 throw new Error("error while fetching data");
             }
-
         } catch (e) {
             console.warn(e)
-
         }
-
     }
 
     const saveCurrent = async (productID: number) => {
@@ -94,8 +94,8 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
                 date
             }
 
-            const currResponse = await fetch(``, {
-                method: 'POST',
+            const currResponse = await fetch(`/product/update`, {
+                method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
