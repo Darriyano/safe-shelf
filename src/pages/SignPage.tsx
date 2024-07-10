@@ -11,6 +11,7 @@ interface signData {
     age: number;
     sex: string;
     lifestyle: string;
+    goal: string;
 }
 
 interface statusResponse400 {
@@ -33,6 +34,8 @@ const SignPage = () => {
         const height = Number((document.getElementById('height') as HTMLInputElement).value);
         const weight = Number((document.getElementById('weight') as HTMLInputElement).value);
         const lifestyle = (document.getElementById('lifestyle') as HTMLSelectElement).value;
+        const goal = (document.getElementById('goal') as HTMLSelectElement).value;
+
 
         const signed: signData = {
             login,
@@ -43,7 +46,8 @@ const SignPage = () => {
             weight,
             age,
             sex,
-            lifestyle
+            lifestyle,
+            goal
         }
 
         try {
@@ -121,6 +125,13 @@ const SignPage = () => {
                     <option value="Daily trainings\Work associated with physical activity">Daily trainings\Work
                         associated with physical activity
                     </option>
+                </select>
+
+                <label htmlFor="goal">Goal:</label>
+                <select id="goal" name="goal" required>
+                    <option value="loss">Lose weight</option>
+                    <option value="get">Get weight</option>
+                    <option value="stay">Stay</option>
                 </select>
                 <button onClick={handleSignIn} className='signbtn'>Sign up</button>
             </div>

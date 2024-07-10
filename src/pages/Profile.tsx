@@ -12,6 +12,7 @@ interface ProfileData {
     age: number;
     sex: string;
     lifestyle: string;
+    goal: string;
 }
 
 interface UpdatingData {
@@ -25,6 +26,7 @@ interface UpdatingData {
     age: number;
     sex: string;
     lifestyle: string;
+    goal: string;
 }
 
 interface statusResponse400 {
@@ -48,6 +50,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
     const [currentAge, setCurrentAge] = useState<number>();
     const [currentSex, setCurrentSex] = useState<string>();
     const [currentLifestyle, setCurrentLifestyle] = useState<string>();
+    const [currentGoal, setCurrentGoal] = useState<string>();
+
     const [disabled, setDisabled] = useState(true);
 
     const lifeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -58,6 +62,11 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
     const sexChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = event.target.value;
         setCurrentSex(value);
+    };
+
+    const goalChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const value = event.target.value;
+        setCurrentGoal(value);
     };
 
     useEffect(() => {
@@ -77,8 +86,9 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 setCurrentPass("");
                 setCurrentSex(data.sex);
                 setCurrentSurname(data.surname);
-                setCurrentName(data.name)
-                setCurrentLifestyle(data.lifestyle)
+                setCurrentName(data.name);
+                setCurrentLifestyle(data.lifestyle);
+                setCurrentGoal(data.goal);
             } catch (err) {
                 alert(err);
             }
@@ -101,6 +111,7 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
         const age = Number((document.getElementById('age') as HTMLInputElement).value);
         const sex = (document.getElementById('gender') as HTMLSelectElement).value;
         const lifestyle = (document.getElementById('lifestyle') as HTMLSelectElement).value;
+        const goal = (document.getElementById('goal') as HTMLSelectElement).value;
 
         const updatedProfile: UpdatingData = {
             oldLogin,
@@ -112,7 +123,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
             password,
             age,
             sex,
-            lifestyle
+            lifestyle,
+            goal
         }
 
         try {
@@ -138,6 +150,7 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 setCurrentSurname(data.surname);
                 setCurrentName(data.name)
                 setCurrentLifestyle(data.lifestyle)
+                setCurrentGoal(data.goal)
                 sessionStorage.setItem('userLogin', data.login);
                 setDisabled(true);
 
@@ -206,6 +219,14 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                         <option value="Daily trainings\Work associated with physical activity">Daily trainings\Work
                             associated with physical activity
                         </option>
+                    </select>
+
+                    <label htmlFor="goal">Goal:</label>
+                    <select id="goal" name="goal" value={currentGoal} disabled={disabled} onChange={goalChange}
+                            required>
+                        <option value="loss">Lose weight</option>
+                        <option value="get">Get weight</option>
+                        <option value="stay">Stay</option>
                     </select>
                 </div>
                 <div className="buttons">
