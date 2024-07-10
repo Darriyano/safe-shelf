@@ -5,7 +5,6 @@ import {useResponse} from "./ResponseContext";
 
 interface ProfileData {
     login: string;
-    password: string;
     name: string;
     surname: string;
     age: number;
@@ -64,18 +63,16 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 }
                 const currResponse = await fetch(`/account/${userLogin.toString()}`);
                 const data: ProfileData = await currResponse.json();
-                console.log(data.lifestyle)
                 // setProfileData(data);
                 setCurrentMail(data.login)
                 setCurrentAge(Number(data.age));
-                setCurrentPass(data.password);
+                setCurrentPass("");
                 setCurrentSex(data.sex);
                 setCurrentSurname(data.surname);
                 setCurrentName(data.name)
                 setCurrentLifestyle(data.lifestyle)
             } catch (err) {
                 alert(err);
-            } finally {
             }
         };
         fetchProfileData().then();
@@ -83,7 +80,10 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
 
     // For now is useless
     const handleSave = async () => {
-        const oldLogin: string = response.toString();
+        let oldLogin = sessionStorage.getItem('userLogin')
+        if (!oldLogin) {
+            oldLogin = "";
+        }
         const login = (document.getElementById('mail') as HTMLInputElement).value;
         const password = (document.getElementById('new-password') as HTMLInputElement).value;
         const name = (document.getElementById('name') as HTMLInputElement).value;
@@ -91,7 +91,6 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
         const age = Number((document.getElementById('age') as HTMLInputElement).value);
         const sex = (document.getElementById('gender') as HTMLSelectElement).value;
         const lifestyle = (document.getElementById('lifestyle') as HTMLSelectElement).value;
-
 
         const updatedProfile: UpdatingData = {
             oldLogin,
@@ -104,6 +103,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
             lifestyle
         }
 
+        console.log(updatedProfile)
+
         try {
             /* FIX ENDPOINT */
             const currResponse = await fetch("/account", {
@@ -113,6 +114,7 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 },
                 body: JSON.stringify(updatedProfile),
             });
+
             const currentStatus = currResponse.status;
 
             if (currentStatus === 200) {
