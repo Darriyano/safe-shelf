@@ -3,6 +3,16 @@ import HeaderPage from "./HeaderPage";
 import {useLocation, useNavigate} from "react-router-dom";
 import '../styles/details.css'
 
+interface updating {
+    login: string,
+    productID: number,
+    date: string
+}
+
+interface deleting {
+    login: string,
+    productID: number,
+}
 
 const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const location = useLocation();
@@ -24,11 +34,84 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
     // Функция для обновления состояния выбранной даты
     const handleDateChange = (e: any) => {
         setSelectedDate(e.target.value);
+        localStorage.setItem("dateToChange", selectedDate)
     };
 
     const reNavigate = () => {
         navigate('/grocery/*');
         window.location.reload();
+    }
+
+    const deleteCurrent = async (productID: number) => {
+        try {
+            let login = sessionStorage.getItem('userLogin');
+            if (!login) {
+                login = ""
+            }
+            const dateToDelete: deleting = {
+                login,
+                productID,
+            }
+            const currResponse = await fetch(``, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dateToDelete),
+            });
+
+            const currStatus = currResponse.status;
+            if (currStatus == 200) {
+                navigate('/grocery/*', {replace: true});
+                window.location.reload();
+            } else {
+                throw new Error("error while fetching data");
+            }
+
+        } catch (e) {
+            console.warn(e)
+
+        }
+
+    }
+
+    const saveCurrent = async (productID: number) => {
+        try {
+            let login = sessionStorage.getItem('userLogin');
+            let date = sessionStorage.getItem('dateToChange')
+
+            if (!login) {
+                login = ""
+            }
+
+            if (!date) {
+                date = ""
+            }
+
+            const dateToSend: updating = {
+                login,
+                productID,
+                date
+            }
+
+            const currResponse = await fetch(``, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dateToSend),
+            });
+
+            const currStatus = currResponse.status;
+            if (currStatus == 200) {
+                navigate('/grocery/*', {replace: true});
+                window.location.reload();
+            } else {
+                throw new Error("error while fetching data");
+            }
+        } catch (e) {
+            console.warn(e)
+        }
     }
 
     return (
@@ -63,8 +146,8 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
                 />
             </div>
             <div className='buttons-del'>
-                <button className='fixed-button delete'>Delete</button>
-                <button className='fixed-button save'>Save</button>
+                <button className='fixed-button delete' onClick={() => deleteCurrent(id)}>Delete</button>
+                <button className='fixed-button save' onClick={() => saveCurrent(id)}>Save</button>
             </div>
         </>
     )
