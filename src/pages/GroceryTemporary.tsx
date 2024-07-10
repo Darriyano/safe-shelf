@@ -5,7 +5,6 @@ import '../styles/groceryTemporary.css'
 import {useIndex} from "./IndicesHook";
 import {useDate} from "./DatesHook";
 
-
 interface newGroceries {
     login: string,
     products: {

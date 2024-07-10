@@ -86,6 +86,7 @@ const SignPage = () => {
             <h1>SafeShelf</h1>
 
             <div className="inputs-sig">
+
                 <label htmlFor="mail">Login</label>
                 <input type="email" id="email" name="login" required/>
 

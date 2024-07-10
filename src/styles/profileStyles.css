@@ -12,11 +12,13 @@ h1 {
     font-size: 30px;
     margin-bottom: 40px;
     margin-top: 45px;
+    margin-top: 45px;
 }
 
 .inputs {
     display: flex;
     flex-direction: column;
+    margin-top: 50px;
 }
 
 .inputs input {

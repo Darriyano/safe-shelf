@@ -128,7 +128,6 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
         }
 
         try {
-            /* FIX ENDPOINT */
             const currResponse = await fetch("/account", {
                 method: 'PUT',
                 headers: {
