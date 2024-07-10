@@ -7,6 +7,8 @@ interface ProfileData {
     login: string;
     name: string;
     surname: string;
+    height: number;
+    weight: number;
     age: number;
     sex: string;
     lifestyle: string;
@@ -17,6 +19,8 @@ interface UpdatingData {
     login: string;
     name: string;
     surname: string;
+    height: number;
+    weight: number;
     password: string;
     age: number;
     sex: string;
@@ -39,6 +43,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
     const [currentPass, setCurrentPass] = useState<string>();
     const [currentName, setCurrentName] = useState<string>();
     const [currentSurname, setCurrentSurname] = useState<string>();
+    const [currentHeight, setCurrentHeight] = useState<number>();
+    const [currentWeight, setCurrentWeight] = useState<number>();
     const [currentAge, setCurrentAge] = useState<number>();
     const [currentSex, setCurrentSex] = useState<string>();
     const [currentLifestyle, setCurrentLifestyle] = useState<string>();
@@ -66,6 +72,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 // setProfileData(data);
                 setCurrentMail(data.login)
                 setCurrentAge(Number(data.age));
+                setCurrentHeight(Number(data.height));
+                setCurrentWeight(Number(data.weight));
                 setCurrentPass("");
                 setCurrentSex(data.sex);
                 setCurrentSurname(data.surname);
@@ -88,6 +96,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
         const password = (document.getElementById('new-password') as HTMLInputElement).value;
         const name = (document.getElementById('name') as HTMLInputElement).value;
         const surname = (document.getElementById('surname') as HTMLInputElement).value;
+        const height = Number((document.getElementById('height') as HTMLInputElement).value);
+        const weight = Number((document.getElementById('weight') as HTMLInputElement).value);
         const age = Number((document.getElementById('age') as HTMLInputElement).value);
         const sex = (document.getElementById('gender') as HTMLSelectElement).value;
         const lifestyle = (document.getElementById('lifestyle') as HTMLSelectElement).value;
@@ -97,13 +107,13 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
             login,
             name,
             surname,
+            height,
+            weight,
             password,
             age,
             sex,
             lifestyle
         }
-
-        console.log(updatedProfile)
 
         try {
             /* FIX ENDPOINT */
@@ -123,10 +133,11 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 setCurrentAge(Number(data.age));
                 setCurrentPass(data.password);
                 setCurrentSex(data.sex);
+                setCurrentHeight(Number(data.height));
+                setCurrentWeight(Number(data.weight));
                 setCurrentSurname(data.surname);
                 setCurrentName(data.name)
                 setCurrentLifestyle(data.lifestyle)
-                // setResponse(login);
                 sessionStorage.setItem('userLogin', data.login);
                 setDisabled(true);
 

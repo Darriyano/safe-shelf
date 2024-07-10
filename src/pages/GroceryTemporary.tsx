@@ -69,10 +69,7 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
         // HERE WILL SAVE THE CURRENT CLICKED ID TO DELETE
         datesDict[index] = event.target.value;
         setDict(datesDict);
-        // Update the date in state
-        // const newGroceryDates = [...groceryDates];
-        // newGroceryDates[index] = newDate;
-        // setGroceryDates(newGroceryDates);
+
     }
 
     const isClicked = (index: number) => {

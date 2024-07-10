@@ -1,12 +1,13 @@
 import {useNavigate} from "react-router-dom";
 import '../styles/signer.css'
-import {useState} from "react";
 
 interface signData {
     login: string;
     password: string;
     name: string;
     surname: string;
+    height: number;
+    weight: number;
     age: number;
     sex: string;
     lifestyle: string;
@@ -29,6 +30,8 @@ const SignPage = () => {
         const surname = (document.getElementById('surname') as HTMLInputElement).value;
         const age = Number((document.getElementById('age') as HTMLInputElement).value);
         const sex = (document.getElementById('gender') as HTMLSelectElement).value;
+        const height = Number((document.getElementById('height') as HTMLInputElement).value);
+        const weight = Number((document.getElementById('weight') as HTMLInputElement).value);
         const lifestyle = (document.getElementById('lifestyle') as HTMLSelectElement).value;
 
         const signed: signData = {
@@ -36,13 +39,15 @@ const SignPage = () => {
             password,
             name,
             surname,
+            height,
+            weight,
             age,
             sex,
             lifestyle
         }
 
         try {
-            if (!login || !password || !name || !surname || !age) {
+            if (!login || !password || !name || !surname || !age || !height || !weight) {
                 alert("Data cannot be empty!");
                 throw new Error("Data cannot be empty!");
             }
@@ -67,12 +72,9 @@ const SignPage = () => {
                 // ЧТО ДЕЛАЕМ?
                 throw new Error('Непредвиденная ошибка. Попробуйте позже');
             }
-
-
         } catch (error) {
             alert("Error: " + error)
         }
-
     };
 
     return (
@@ -91,6 +93,11 @@ const SignPage = () => {
 
                 <label htmlFor="surname">Surname:</label>
                 <input type="text" id="surname" name="surname" required/>
+                <label htmlFor="height">Height:</label>
+                <input type="number" id="height" name="height" min="0" max="100" required/>
+
+                <label htmlFor="weight">Weight:</label>
+                <input type="number" id="weight" name="weight" min="0" max="100" required/>
 
                 <label htmlFor="age">Age:</label>
                 <input type="number" id="age" name="age" min="0" max="100" required/>

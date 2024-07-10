@@ -8,10 +8,14 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
     const location = useLocation();
     const navigate = useNavigate();
 
-    const {groceryName, description, parameters, date} = location.state as {
-        groceryName: string,
-        parameters: Array<string>,
-        description: string,
+    const {id, name, weight, kcal, proteins, fats, carbohydrates, date} = location.state as {
+        id: number;
+        name: string;
+        weight: number;
+        kcal: number;
+        proteins: number;
+        fats: number;
+        carbohydrates: number;
         date: string;
     };
 
@@ -24,6 +28,7 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
 
     const reNavigate = () => {
         navigate('/grocery/*');
+        window.location.reload();
     }
 
     return (
@@ -39,15 +44,15 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
                         </svg>
 
                     </div>
-                    <div className='dish-name'>{groceryName}</div>
+                    <div className='dish-name'>{name}</div>
                 </div>
                 <p>Ingredients:</p>
                 <ul className='list-decoration'>
-                    {parameters.map((param, index) => (
-                        <li key={index}>{param}</li>
-                    ))}
+                    <li>Weight: <b>{weight}</b></li>
+                    <li>Kcal: <b>{kcal}</b></li>
+                    <li>Proteins: <b>{proteins}</b></li>
+                    <li>Carbohydrates: <b> {carbohydrates}</b></li>
                 </ul>
-                <div className='descript'>{description}</div>
 
                 <input
                     type="date"
