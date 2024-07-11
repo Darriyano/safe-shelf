@@ -99,6 +99,7 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
     // For now is useless
     const handleSave = async () => {
         let oldLogin = sessionStorage.getItem('userLogin')
+
         if (!oldLogin) {
             oldLogin = "";
         }
@@ -158,6 +159,8 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 sessionStorage.setItem('userLogin', data.login);
                 setDisabled(true);
 
+                alert("Successfully!")
+
             } else if (currentStatus >= 400) {
                 /* Значит какой-то кринж и мы этот кринж обрабатываем */
                 const badRequest: statusResponse400 = await currResponse.json();
@@ -186,8 +189,9 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                     <label htmlFor="mail">Login</label>
                     <input type="email" id="mail" name="login" defaultValue={currentMail} disabled={disabled} required/>
 
-                    <label htmlFor="pass">Password</label>
-                    <input type="password" id="new-password" defaultValue={currentPass} disabled={disabled} required/>
+                    <label htmlFor="new-password">Password</label>
+                    <input type="new-password" id="new-password" defaultValue={currentPass} disabled={disabled}
+                           required/>
 
                     <label htmlFor="name">Name:</label>
                     <input type="text" id="name" name="name" defaultValue={currentName} disabled={disabled} required/>
@@ -195,6 +199,12 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                     <label htmlFor="surname">Surname:</label>
                     <input type="text" id="surname" name="surname" defaultValue={currentSurname} disabled={disabled}
                            required/>
+
+                    <label htmlFor="height">Height:</label>
+                    <input type="number" id="height" name="height" defaultValue={currentHeight} disabled={disabled} required/>
+
+                    <label htmlFor="weight">Weight:</label>
+                    <input type="number" id="weight" name="weight" defaultValue={currentWeight} disabled={disabled} required/>
 
                     <label htmlFor="age">Age:</label>
                     <input type="number" id="age" name="age" defaultValue={currentAge} min="0" max="100"
