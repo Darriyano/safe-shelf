@@ -11,7 +11,7 @@ interface updating {
 
 interface deleting {
     login: string,
-    productID: number,
+    userProductID: number,
 }
 
 const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
@@ -41,7 +41,7 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
         window.location.reload();
     }
 
-    const deleteCurrent = async (productID: number) => {
+    const deleteCurrent = async (userProductID: number) => {
         try {
             let login = sessionStorage.getItem('userLogin');
             if (!login) {
@@ -49,7 +49,7 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
             }
             const dateToDelete: deleting = {
                 login,
-                productID,
+                userProductID,
             }
 
             // console.log(dateToDelete)
