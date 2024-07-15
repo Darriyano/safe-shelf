@@ -145,7 +145,7 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
                     const data: GroceryContainerProps["groceries"] = await currResponse.json();
                     setGroceries(data);
                 } else {
-                    console.error(currResponse.statusText);
+                    throw new Error(currResponse.statusText);
                 }
 
             } catch (error) {

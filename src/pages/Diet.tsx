@@ -1,48 +1,57 @@
-import {FC, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import '../styles/dietStyles.css'
 import CardContainer from "./dietComponent";
 
-interface Cards {
-    
+interface Diet {
+    dishes: {
+        "id": string,
+        "name": string,
+        "ingredients": Array<IngredientsEntity>,
+        "description": string,
+        "type": string
+    }[];
 }
 
+interface IngredientsEntity {
+    userProductId: Number,
+    name: string,
+    weight: Number
+}
 
 const Diet: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const [activeButton, setActiveButton] = useState('breakfast'); // state to manage active button
+    const [dishes, setDishes] = useState<Diet["dishes"]>([]);
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const login = sessionStorage.getItem('userLogin');
+                const currResponse = await fetch(`/dish/${login}`);
+                const currStatus = currResponse.status;
+                if (currStatus === 200) {
+                    const data: Diet["dishes"] = await currResponse.json();
+                    setDishes(data);
+                } else {
+                    console.error(currResponse.statusText);
+                }
+            } catch (err) {
+                console.warn(err)
+            }
+        }
+        fetchData().then();
+    }, []);
 
     /* Здесь будет происходить обработка пришедшего с бэкенда запроса, который в последствии будет выкидываться в виде карточки-компонента*/
     const renderComponent = () => {
         switch (activeButton) {
             case 'breakfast':
-                return (<CardContainer cards={[
-                    {
-                        dishName: 'Dish name example bigger',
-                        ingredients: ["Flour 100g", "Egg", "Water"],
-                        description: 'Snook smooth dogfish bluefin tuna menhaden kuhli loach airbreathing catfish. Lemon sole scorpionfish salamanderfish cherry salmon kuhli loach, "Antarctic icefish grunt Asiatic glassfish weasel shark." Marblefish pearl perch Death Valley pupfish orange roughy flabby whalefish brotula moray eel cookie-cutter shark. Frogfish bigscale fish pearl danio; Oregon chub. False cat shark parrotfish, ocean sunfish dragonfish crappie elephant fish barramundi: weeverfish. Long-whiskered catfish seamoth, "sarcastic fringehead," kingfish barracuda stonecat mail-cheeked fish--coolie loach flashlight fish gunnel tidewater goby firefish.'
-                    },
-                    {
-                        dishName: 'SecondDish',
-                        ingredients: ["1", "2", "3"],
-                        description: 'Some example text to show example'
-                    }
-                ]}/>);
+                return (<CardContainer dishes={dishes}/>);
             case 'lunch':
-                return (<CardContainer cards={[
-                    {
-                        dishName: 'firstDish',
-                        ingredients: ["1", "2", "3"],
-                        description: 'Some example text to show example'
-                    }
-                ]}/>);
+                return (<CardContainer dishes={dishes}/>);
             case 'dinner':
-                return (<CardContainer cards={[
-                    {
-                        dishName: 'Dish',
-                        ingredients: ["1", "2", "3"],
-                        description: 'Some example text to show example'
-                    }
-                ]}/>);
+                return (<CardContainer dishes={dishes}/>);
             default:
                 return null;
         }

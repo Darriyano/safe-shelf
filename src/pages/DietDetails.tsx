@@ -3,15 +3,20 @@ import HeaderPage from "./HeaderPage";
 import {useLocation, useNavigate} from "react-router-dom";
 import '../styles/details.css'
 
+interface IngredientsEntity {
+    userProductId: Number,
+    name: string,
+    weight: Number
+}
 
 const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const {dishName, description, ingredients} = location.state as {
-        dishName: string,
+    const {name, description, ingredients} = location.state as {
+        name: string,
         description: string,
-        ingredients: string[]
+        ingredients: Array<IngredientsEntity>
     };
 
     const reNavigate = () => {
@@ -31,12 +36,12 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
                         </svg>
 
                     </div>
-                    <div className='dish-name'>{dishName}</div>
+                    <div className='dish-name'>{name}</div>
                 </div>
                 <p>Ingredients:</p>
                 <ul className='list-decoration'>
                     {ingredients.map((ingredient, index) => (
-                        <li key={index}>{ingredient}</li>
+                        <li key={index}>{ingredient.name + ": " + ingredient.weight + "g"}</li>
                     ))}
                 </ul>
                 <div className='descript'>{description}</div>

@@ -31,7 +31,6 @@ const CardContainer: React.FC<CardContainerProps> = ({cards}) => {
 
     const [groceries, setGroceries] = useState<GroceryContainerProps["groceries"]>([]);
 
-
     const action = (id: number,
                     name: string, weight: number,
                     kcal: number,
