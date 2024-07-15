@@ -1,4 +1,4 @@
-import {FC, useState} from "react";
+import React, {FC, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import {useLocation, useNavigate} from "react-router-dom";
 import '../styles/details.css'
@@ -28,13 +28,12 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
         carbohydrates: number;
         date: string;
     };
-
-    const [selectedDate, setSelectedDate] = useState(date);
+    const [currDate, setCurrDate] = useState(date);
 
     // Функция для обновления состояния выбранной даты
-    const handleDateChange = (e: any) => {
-        setSelectedDate(e.target.value);
-        localStorage.setItem("dateToChange", selectedDate)
+    const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const pressedDate = (document.getElementById('date') as HTMLInputElement).value;
+        setCurrDate(pressedDate);
     };
 
     const reNavigate = () => {
@@ -78,7 +77,7 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
     const saveCurrent = async (productID: number) => {
         try {
             let login = sessionStorage.getItem('userLogin');
-            let date = sessionStorage.getItem('dateToChange')
+            let date = currDate;
 
             if (!login) {
                 login = ""
@@ -141,8 +140,8 @@ const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({set
                     type="date"
                     className='date-picker'
                     id="date"
-                    value={selectedDate}
-                    onChange={handleDateChange}
+                    value={currDate}
+                    onInput={handleDateChange}
                 />
             </div>
             <div className='buttons-del'>

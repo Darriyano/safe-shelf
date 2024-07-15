@@ -108,6 +108,7 @@ const SignPage = () => {
 
                 <label htmlFor="surname">Surname:</label>
                 <input type="text" id="surname" name="surname" required/>
+
                 <label htmlFor="height">Height:</label>
                 <input type="number" id="height" name="height" min="0" max="100" required/>
 
