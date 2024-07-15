@@ -13,13 +13,11 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
     const location = useLocation();
     const navigate = useNavigate();
 
-    const {name, description, ingredients} = location.state as {
-        name: string,
+    const {dishName, description, ingredients} = location.state as {
+        dishName: string,
         description: string,
         ingredients: Array<IngredientsEntity>
     };
-
-    console.log(name);
 
     const reNavigate = () => {
         navigate('/diet/*');
@@ -37,7 +35,7 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
                                 fill="#4D544B"/>
                         </svg>
                     </div>
-                    {name}
+                    {dishName}
                 </div>
                 <p>Ingredients:</p>
                 <ul className='list-decoration'>

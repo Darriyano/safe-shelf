@@ -26,8 +26,6 @@ const Grocery: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
         navigate('/grocery-scanner/*');
     }
 
-    //TODO: REMOVE TEST DATE
-
     return (
         <>
             <HeaderPage setMenuVisible={setMenuVisible}/>
