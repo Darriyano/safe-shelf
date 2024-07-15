@@ -62,6 +62,7 @@ button.active::after {
     border-radius: 20px;
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
     margin-top: 45px;
+    transition-duration: 0.2s;
 }
 
 .grocery-display {
@@ -91,6 +92,11 @@ button.active::after {
 
 .card-display svg {
     margin-left: auto; /* Помещает иконку в правый конец блока */
+}
+
+.card-display:hover {
+    background-color: #79cb64;
+    color: #FFF;
 }
 
 .regenerate {
