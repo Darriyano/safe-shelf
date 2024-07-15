@@ -3,6 +3,10 @@ import HeaderPage from "./HeaderPage";
 import '../styles/dietStyles.css'
 import CardContainer from "./dietComponent";
 
+interface Cards {
+    
+}
+
 
 const Diet: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const [activeButton, setActiveButton] = useState('breakfast'); // state to manage active button
