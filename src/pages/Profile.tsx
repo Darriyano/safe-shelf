@@ -38,8 +38,6 @@ interface statusResponse400 {
 
 const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     // In response we save mail info about user
-    const {response, setResponse} = useResponse();
-
     // const [profileData, setProfileData] = useState<ProfileData | null>(null);
     const [currentMail, setCurrentMail] = useState<string>();
     const [currentPass, setCurrentPass] = useState<string>();
@@ -52,7 +50,25 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
     const [currentLifestyle, setCurrentLifestyle] = useState<string>();
     const [currentGoal, setCurrentGoal] = useState<string>();
 
+    const [isEmailValid, setIsEmailValid] = useState(true);
+    const [isPwValid, setIsPwValid] = useState(true);
+    const [isNameValid, setIsNameValid] = useState(true);
+    const [isSurnameValid, setIsSurnameValid] = useState(true);
+    const [isAgeValid, setIsAgeValid] = useState(true);
+    const [isHeightValid, setIsHeightValid] = useState(true);
+    const [isWeightValid, setIsWeightValid] = useState(true);
+
     const [disabled, setDisabled] = useState(true);
+
+    const validateSpaces = (str: string): boolean => {
+        const spaceRegex = /^\S*$/;
+        return spaceRegex.test(str);
+    };
+
+    const validateAlph = (str: string): boolean => {
+        const alRegex = /^[A-Za-z]+$/;
+        return alRegex.test(str);
+    };
 
     const lifeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = event.target.value;
@@ -134,6 +150,103 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
         }
 
         try {
+            if (!validateSpaces(login) || !validateAlph(login)) {
+                setIsEmailValid(false);
+                const emailInput = document.getElementById('mail') as HTMLInputElement;
+                emailInput.value = "Input should contain only english alphabet";
+                throw new Error("ERROR WHILE INPUT LOGIN");
+            }
+
+            if (!validateSpaces(password) && !password) {
+                setIsEmailValid(true);
+                setIsAgeValid(true);
+                setIsHeightValid(true);
+                setIsSurnameValid(true);
+                setIsWeightValid(true);
+                setIsPwValid(true)
+                setIsNameValid(true);
+
+                setIsPwValid(false);
+                throw new Error("ERROR WHILE INPUT PASSWORD");
+            }
+
+            if (!validateSpaces(name) || name.length >= 30 || !validateAlph(name)) {
+                setIsEmailValid(true);
+                setIsAgeValid(true);
+                setIsHeightValid(true);
+                setIsSurnameValid(true);
+                setIsWeightValid(true);
+                setIsPwValid(true)
+
+                setIsNameValid(false);
+                const nameInput = document.getElementById('name') as HTMLInputElement;
+                if (name.length > 30) {
+                    nameInput.value = "Name should be less than 30 symbols";
+                } else {
+                    nameInput.value = "Input should contain only english alphabet";
+                }
+                throw new Error("ERROR WHILE INPUT NAME");
+            }
+
+            if (!validateSpaces(surname) || surname.length >= 30 || !validateAlph(surname)) {
+                setIsEmailValid(true);
+                setIsAgeValid(true);
+                setIsHeightValid(true);
+                setIsWeightValid(true);
+                setIsPwValid(true)
+                setIsNameValid(true);
+
+                setIsSurnameValid(false);
+                const nameInput = document.getElementById('surname') as HTMLInputElement;
+                if (surname.length > 30) {
+                    nameInput.value = "Name should be less than 30 symbols";
+                } else {
+                    nameInput.value = "Input should contain only english alphabet";
+                }
+                throw new Error("ERROR WHILE INPUT SURNAME");
+            }
+
+            if (weight < 1 || weight > 310) {
+                setIsEmailValid(true);
+                setIsAgeValid(true);
+                setIsHeightValid(true);
+                setIsSurnameValid(true);
+                setIsPwValid(true)
+                setIsNameValid(true);
+
+                setIsWeightValid(false);
+                const weightInput = document.getElementById('weight') as HTMLInputElement;
+                weightInput.value = '';
+                throw new Error("ERROR WHILE INPUT WEIGHT");
+            }
+
+            if (height < 1 || height > 220) {
+                setIsEmailValid(true);
+                setIsAgeValid(true);
+                setIsSurnameValid(true);
+                setIsWeightValid(true);
+                setIsPwValid(true)
+                setIsNameValid(true);
+
+                setIsHeightValid(false);
+                const heightInput = document.getElementById('height') as HTMLInputElement;
+                heightInput.value = '';
+                throw new Error("ERROR WHILE INPUT HEIGHT");
+            }
+
+            if (age < 1 || age > 110) {
+                setIsEmailValid(true);
+                setIsHeightValid(true);
+                setIsSurnameValid(true);
+                setIsWeightValid(true);
+                setIsPwValid(true)
+                setIsNameValid(true);
+
+                setIsAgeValid(false);
+                const ageInput = document.getElementById('age') as HTMLInputElement;
+                ageInput.value = '';
+                throw new Error("ERROR WHILE INPUT AGE");
+            }
             const currResponse = await fetch("/account", {
                 method: 'PUT',
                 headers: {
@@ -158,9 +271,6 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 setCurrentGoal(data.goal)
                 sessionStorage.setItem('userLogin', data.login);
                 setDisabled(true);
-
-                alert("Successfully!")
-
             } else if (currentStatus >= 400) {
                 /* Значит какой-то кринж и мы этот кринж обрабатываем */
                 const badRequest: statusResponse400 = await currResponse.json();
@@ -172,9 +282,10 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
             }
 
         } catch (err) {
-            alert(err);
+            console.warn(err);
         }
     }
+
 
     const editSave = () => {
         setDisabled(false);
@@ -187,27 +298,46 @@ const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVis
                 <h1>Profile</h1>
                 <div className="inputs">
                     <label htmlFor="mail">Login</label>
-                    <input type="email" id="mail" name="login" defaultValue={currentMail} disabled={disabled} required/>
+                    <input type="email" id="mail" name="login" defaultValue={currentMail} disabled={disabled} style={{
+                        border: isEmailValid ? 'none' : '2px solid red'
+                    }} required/>
 
                     <label htmlFor="new-password">Password</label>
-                    <input type="new-password" id="new-password" defaultValue={currentPass} disabled={disabled}
+                    <input type="new-password" id="new-password" defaultValue={currentPass} disabled={disabled} style={{
+                        border: isPwValid ? 'none' : '2px solid red'
+                    }}
                            required/>
 
                     <label htmlFor="name">Name:</label>
-                    <input type="text" id="name" name="name" defaultValue={currentName} disabled={disabled} required/>
+                    <input type="text" id="name" name="name" defaultValue={currentName} disabled={disabled} style={{
+                        border: isNameValid ? 'none' : '2px solid red'
+                    }} required/>
 
                     <label htmlFor="surname">Surname:</label>
                     <input type="text" id="surname" name="surname" defaultValue={currentSurname} disabled={disabled}
+                           style={{
+                               border: isSurnameValid ? 'none' : '2px solid red'
+                           }}
                            required/>
 
                     <label htmlFor="height">Height:</label>
-                    <input type="number" id="height" name="height" defaultValue={currentHeight} disabled={disabled} required/>
+                    <input type="number" id="height" name="height" defaultValue={currentHeight} disabled={disabled}
+                           style={{
+                               border: isHeightValid ? 'none' : '2px solid red'
+                           }}
+                           required/>
 
                     <label htmlFor="weight">Weight:</label>
-                    <input type="number" id="weight" name="weight" defaultValue={currentWeight} disabled={disabled} required/>
+                    <input type="number" id="weight" name="weight" defaultValue={currentWeight} disabled={disabled}
+                           style={{
+                               border: isWeightValid ? 'none' : '2px solid red'
+                           }}
+                           required/>
 
                     <label htmlFor="age">Age:</label>
-                    <input type="number" id="age" name="age" defaultValue={currentAge} min="0" max="100"
+                    <input type="number" id="age" name="age" defaultValue={currentAge} style={{
+                        border: isAgeValid ? 'none' : '2px solid red'
+                    }}
                            disabled={disabled} required/>
 
                     <label htmlFor="gender">Gender:</label>

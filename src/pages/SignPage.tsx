@@ -15,6 +15,7 @@ interface signData {
     goal: string;
 }
 
+
 interface statusResponse400 {
     code: string,
     description: string,
