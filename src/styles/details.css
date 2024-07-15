@@ -4,8 +4,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 50%;
-    height: 100%;
 }
 
 .heading {
@@ -14,13 +12,16 @@
     gap: 20px;
     align-items: center;
     justify-content: center;
-}
-
-.dish-name {
     font-family: "Roboto", sans-serif;
     font-size: 25px;
     color: #4D544B;
 }
+
+/*.dish-name {*/
+/*    font-family: "Roboto", sans-serif;*/
+/*    font-size: 25px;*/
+/*    color: #4D544B;*/
+/*}*/
 
 p {
     font-family: "Roboto", sans-serif;
@@ -42,6 +43,7 @@ p {
     margin-left: 40px;
     margin-right: 40px;
     font-size: 20px;
+    width: 50%;
 }
 
 .cooked {
