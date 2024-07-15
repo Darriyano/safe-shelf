@@ -1,5 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import '../styles/signer.css'
+import React, {useState} from "react";
 
 interface signData {
     login: string;
@@ -24,6 +25,13 @@ interface statusResponse400 {
 const SignPage = () => {
     const navigate = useNavigate();
 
+    const validateEmail = (email: string): boolean => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+
+    };
+
+
     const handleSignIn = async () => {
         const login = (document.getElementById('email') as HTMLInputElement).value;
         const password = (document.getElementById('new-password') as HTMLInputElement).value;
@@ -35,7 +43,6 @@ const SignPage = () => {
         const weight = Number((document.getElementById('weight') as HTMLInputElement).value);
         const lifestyle = (document.getElementById('lifestyle') as HTMLSelectElement).value;
         const goal = (document.getElementById('goal') as HTMLSelectElement).value;
-
 
         const signed: signData = {
             login,
@@ -51,9 +58,12 @@ const SignPage = () => {
         }
 
         try {
-            if (!login || !password || !name || !surname || !age || !height || !weight) {
-                alert("Data cannot be empty!");
-                throw new Error("Data cannot be empty!");
+            if (!validateEmail(login)) {
+                throw new Error("ERROR WHILE INPUT LOGIN");
+            }
+
+            if (!login || !password || !name || !surname || !age || !height || !weight || height < 100 || weight < 20 || height > 250 || weight > 400 || age < 0 || age > 110) {
+                throw new Error("INCORRECT DATA!");
             }
 
             const sending = await fetch("/account/register", {
