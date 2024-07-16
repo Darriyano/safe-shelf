@@ -19,6 +19,10 @@ interface IngredientsEntity {
     weight: Number
 }
 
+interface SendRegenerate {
+    state: string;
+}
+
 const Diet: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const [activeButton, setActiveButton] = useState('breakfast'); // state to manage active button
     const [dishes, setDishes] = useState<Diet["dishes"]>([]);
@@ -43,15 +47,39 @@ const Diet: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisibl
         fetchData().then();
     }, []);
 
+    const regeneration = async (state: string, stateName: string) => {
+        try {
+            const login = sessionStorage.getItem('userLogin');
+            const currResponse = await fetch(`/dish/${stateName}/${login}`);
+            const currStatus = currResponse.status;
+            if (currStatus === 200) {
+                window.location.reload();
+            } else {
+                console.error(currResponse.statusText);
+            }
+
+        } catch (e) {
+            console.warn(e)
+        }
+    }
+
     /* Здесь будет происходить обработка пришедшего с бэкенда запроса, который в последствии будет выкидываться в виде карточки-компонента*/
     const renderComponent = () => {
         switch (activeButton) {
             case 'breakfast':
-                return (<CardContainer dishes={dishes}/>);
+                return (<><CardContainer currentState='B' dishes={dishes}/>
+                        <button className='regenerate' onClick={() => regeneration('B', 'breakfast')}>Regenerate
+                        </button>
+                    </>
+                );
             case 'lunch':
-                return (<CardContainer dishes={dishes}/>);
+                return (<><CardContainer currentState='L' dishes={dishes}/>
+                    <button className='regenerate' onClick={() => regeneration('L', 'lunch')}>Regenerate</button>
+                </>);
             case 'dinner':
-                return (<CardContainer dishes={dishes}/>);
+                return (<><CardContainer currentState='D' dishes={dishes}/>
+                    <button className='regenerate' onClick={() => regeneration('D', 'dinner')}>Regenerate</button>
+                </>);
             default:
                 return null;
         }
@@ -83,7 +111,6 @@ const Diet: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisibl
                     {renderComponent()}
                 </div>
             </div>
-            <button className='regenerate'>Regenerate</button>
         </div>
     )
 };

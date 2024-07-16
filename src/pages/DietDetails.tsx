@@ -9,11 +9,17 @@ interface IngredientsEntity {
     weight: Number
 }
 
+interface sendCooked {
+    login: string | null,
+    id: string
+}
+
 const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const {dishName, description, ingredients} = location.state as {
+    const {dishId, dishName, description, ingredients} = location.state as {
+        dishId: string,
         dishName: string,
         description: string,
         ingredients: Array<IngredientsEntity>
@@ -21,6 +27,35 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
 
     const reNavigate = () => {
         navigate('/diet/*');
+    }
+
+    const sendCooked = async (id: string) => {
+        try {
+            const login = sessionStorage.getItem('userLogin');
+
+            const cooked: sendCooked = {
+                login,
+                id
+            }
+
+            const currResponse = await fetch(`/dish/cooked`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(cooked),
+            });
+
+            const currStatus = currResponse.status;
+            if (currStatus === 200) {
+                navigate('/diet/*');
+                window.location.reload();
+            } else {
+                console.error(currResponse.statusText);
+            }
+        } catch (e) {
+            console.warn(e)
+        }
     }
 
     return (
@@ -46,7 +81,7 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
                 <div className='descript'>{description}</div>
 
             </div>
-            <button className='cooked'>Cooked</button>
+            <button className='cooked' onClick={() => sendCooked(dishId)}>Cooked</button>
         </>
     )
 };

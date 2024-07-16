@@ -28,7 +28,6 @@ interface GroceryContainerProps {
 // CardContainer component
 const CardContainer: React.FC<CardContainerProps> = ({cards}) => {
     const navigate = useNavigate();
-
     const [groceries, setGroceries] = useState<GroceryContainerProps["groceries"]>([]);
 
     const action = (id: number,
