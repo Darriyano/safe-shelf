@@ -24,16 +24,17 @@ interface IngredientsEntity {
 const CardContainer: React.FC<Diet> = ({currentState, dishes}) => {
     const navigate = useNavigate();
 
-    const action = (dishID: string, dishName: string, description: string, ingredients: Array<IngredientsEntity>) => {
+    const action = (dishId: string, dishName: string, description: string, ingredients: Array<IngredientsEntity>) => {
+
         navigate('/details', {
-            state: {dishID, dishName, description, ingredients}
+            state: {dishId, dishName, description, ingredients}
         });
     }
 
     return (
         <div>
             {dishes.map((dish, index) => (
-                dish.id === currentState && (
+                dish.type === currentState && (
                     <div key={index} className="card-display"
                          onClick={() => action(dish.id, dish.name, dish.description, dish.ingredients)}>
                         <h2>{dish.name}</h2>

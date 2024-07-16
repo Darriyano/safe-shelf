@@ -24,7 +24,6 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
         description: string,
         ingredients: Array<IngredientsEntity>
     };
-
     const reNavigate = () => {
         navigate('/diet/*');
     }
@@ -39,7 +38,7 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
             }
 
             const currResponse = await fetch(`/dish/cooked`, {
-                method: 'POST',
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
