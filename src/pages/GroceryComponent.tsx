@@ -1,29 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import '../styles/dietStyles.css'
 import {useNavigate} from 'react-router-dom';
-
-// REDEFINE
-interface CardContainerProps {
-    cards: {
-        groceryName: string,
-        parameters: Array<string>,
-        description: string,
-        date: string
-    }[];
-}
-
-interface GroceryContainerProps {
-    groceries: {
-        id: number;
-        name: string;
-        weight: number;
-        kcal: number;
-        proteins: number;
-        fats: number;
-        carbohydrates: number;
-        date: string;
-    }[];
-}
+import {CardContainerProps, GroceryContainerProps} from "../api/types";
 
 // CardContainer component
 const CardContainer: React.FC<CardContainerProps> = ({cards}) => {

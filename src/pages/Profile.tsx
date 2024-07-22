@@ -2,39 +2,7 @@ import {FC, useEffect, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import '../styles/profileStyles.css'
 import {useResponse} from "./ResponseContext";
-
-interface ProfileData {
-    login: string;
-    name: string;
-    surname: string;
-    height: number;
-    weight: number;
-    age: number;
-    sex: string;
-    lifestyle: string;
-    goal: string;
-}
-
-interface UpdatingData {
-    oldLogin: string;
-    login: string;
-    name: string;
-    surname: string;
-    height: number;
-    weight: number;
-    password: string;
-    age: number;
-    sex: string;
-    lifestyle: string;
-    goal: string;
-}
-
-interface statusResponse400 {
-    code: string,
-    description: string,
-    exceptionName: string,
-    exceptionMessage: string
-}
+import {ProfileData, statusResponse400, UpdatingData} from "../api/types";
 
 const Profile: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     // In response we save mail info about user

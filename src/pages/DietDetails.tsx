@@ -2,17 +2,8 @@ import {FC} from "react";
 import HeaderPage from "./HeaderPage";
 import {useLocation, useNavigate} from "react-router-dom";
 import '../styles/details.css'
+import {IngredientsEntity, sendCooked} from "../api/types";
 
-interface IngredientsEntity {
-    userProductId: Number,
-    name: string,
-    weight: Number
-}
-
-interface sendCooked {
-    login: string | null,
-    id: string
-}
 
 const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const location = useLocation();

@@ -1,27 +1,9 @@
 import {useNavigate} from "react-router-dom";
 import '../styles/signer.css'
 import React, {useState} from "react";
-
-interface signData {
-    login: string;
-    password: string;
-    name: string;
-    surname: string;
-    height: number;
-    weight: number;
-    age: number;
-    sex: string;
-    lifestyle: string;
-    goal: string;
-}
+import {signData, statusResponse400} from "../api/types";
 
 
-interface statusResponse400 {
-    code: string,
-    description: string,
-    exceptionName: string,
-    exceptionMessage: string
-}
 
 const SignPage = () => {
     const navigate = useNavigate();

@@ -2,26 +2,7 @@ import {FC, useEffect, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import '../styles/dietStyles.css'
 import CardContainer from "./dietComponent";
-
-interface Diet {
-    dishes: {
-        "id": string,
-        "name": string,
-        "ingredients": Array<IngredientsEntity>,
-        "description": string,
-        "type": string
-    }[];
-}
-
-interface IngredientsEntity {
-    userProductId: Number,
-    name: string,
-    weight: Number
-}
-
-interface SendRegenerate {
-    state: string;
-}
+import type {Diet} from '../api/types';
 
 const Diet: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const [activeButton, setActiveButton] = useState('breakfast'); // state to manage active button

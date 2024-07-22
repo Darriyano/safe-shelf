@@ -1,27 +1,10 @@
 import React from 'react';
 import '../styles/dietStyles.css'
 import {useNavigate} from 'react-router-dom';
-
-// Define props type for the CardContainer component
-interface Diet {
-    currentState: string,
-    dishes: {
-        "id": string,
-        "name": string,
-        "ingredients": Array<IngredientsEntity>,
-        "description": string,
-        "type": string
-    }[];
-}
-
-interface IngredientsEntity {
-    userProductId: Number,
-    name: string,
-    weight: Number
-}
+import type {ComponentDiet, IngredientsEntity} from '../api/types';
 
 // CardContainer component
-const CardContainer: React.FC<Diet> = ({currentState, dishes}) => {
+const CardContainer: React.FC<ComponentDiet> = ({currentState, dishes}) => {
     const navigate = useNavigate();
 
     const action = (dishId: string, dishName: string, description: string, ingredients: Array<IngredientsEntity>) => {

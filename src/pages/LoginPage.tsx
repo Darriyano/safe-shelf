@@ -1,24 +1,7 @@
 import React, {FC} from "react";
 import '../styles/login.css'
 import {useNavigate} from "react-router-dom";
-
-
-interface LoginData {
-    login: string,
-    password: string
-}
-
-interface statusResponse400 {
-    code: string,
-    description: string,
-    exceptionName: string,
-    exceptionMessage: string
-}
-
-interface LoginPageProps {
-    onChange: (value: boolean) => void;
-    setResponse: React.Dispatch<React.SetStateAction<string>>;
-}
+import {LoginData, LoginPageProps, statusResponse400} from "../api/types";
 
 
 const LoginPage: FC<LoginPageProps> = ({onChange, setResponse}) => {

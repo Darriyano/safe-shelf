@@ -5,38 +5,8 @@ import '../styles/groceryTemporary.css'
 import {useIndex} from "./IndicesHook";
 import {useDate} from "./DatesHook";
 import {useWeight} from "./WeightHook";
+import {GroceryContainerProps, newGroceries, sendingQR} from "../api/types";
 
-interface newGroceries {
-    login: string,
-    products: {
-        id: number;
-        name: string;
-        weight: number;
-        kcal: number;
-        proteins: number;
-        fats: number;
-        carbohydrates: number;
-        date: string;
-    }[];
-}
-
-interface GroceryContainerProps {
-    groceries: {
-        id: number;
-        name: string;
-        weight: number;
-        kcal: number;
-        proteins: number;
-        fats: number;
-        carbohydrates: number;
-        date: string;
-    }[];
-}
-
-interface sendingQR {
-    login: string | null | undefined;
-    metaStringProducts: string | null | undefined;
-}
 
 const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
     const {indicesArray, setArray} = useIndex();
