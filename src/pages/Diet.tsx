@@ -35,8 +35,10 @@ const Diet: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisibl
                 const currResponse = await fetch(`/dish/${login}`);
                 const currStatus = currResponse.status;
                 if (currStatus === 200) {
+                    // const data: any = await currResponse.json();
                     const data: Diet["dishes"] = await currResponse.json();
                     setDishes(data);
+
                 } else {
                     console.error(currResponse.statusText);
                 }
@@ -65,6 +67,7 @@ const Diet: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisibl
 
     /* Здесь будет происходить обработка пришедшего с бэкенда запроса, который в последствии будет выкидываться в виде карточки-компонента*/
     const renderComponent = () => {
+        console.log(dishes);
         switch (activeButton) {
             case 'breakfast':
                 return (<><CardContainer currentState='B' dishes={dishes}/>
