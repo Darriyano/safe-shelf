@@ -16,7 +16,7 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
         ingredients: Array<IngredientsEntity>
     };
 
-    const description2 = description.replace('\n', '<br>')
+    const description2 = description.replace('\n', '<br />')
 
     const reNavigate = () => {
         navigate('/diet/*');
