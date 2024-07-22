@@ -68,7 +68,6 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
         // HERE WILL SAVE THE CURRENT CLICKED ID TO DELETE
         datesDict[index] = event.target.value;
         setDict(datesDict);
-
     }
 
     const isClicked = (index: number) => {
@@ -90,7 +89,9 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
                             </svg>
                         </div>
                     </div>
-                    <div className="grocery-position">Weight: <b>{grocery.weight}</b></div>
+                    <div
+                        className="grocery-position">Weight: <b>{grocery.weight ? grocery.weight : 'Empty weight selecter'}</b>
+                    </div>
                     <div className="grocery-position">Kcal: <b>{grocery.kcal}</b></div>
                     <div className="grocery-position">Fats: <b>{grocery.fats}</b></div>
                     <div className="grocery-position">Carbohydrates: <b>{grocery.carbohydrates}</b></div>
