@@ -113,13 +113,24 @@ button.active::after {
 }
 
 .add {
+    /*position: fixed;*/
+    /*font-family: "Roboto", sans-serif;*/
+    /*bottom: 20px;*/
+    /*left: 50%;*/
+    /*transform: translate(-50%);*/
+    /*border-radius: 20px;*/
+    /*background-color: #F5DD86;*/
+    /*color: #4D544B;*/
+    /*font-size: 20px;*/
+    /*padding: 10px 47px 11px 47px;*/
+
     font-family: "Roboto", sans-serif;
     display: flex;
     justify-content: center; /* Выравнивание кнопок внутри контейнера по центру */
     margin-top: 20px;
     margin-bottom: 20px;
     border-radius: 20px;
-    background-color: #79CB64;
+    background-color: #F5DD86;
     color: #4D544B;
     font-size: 20px;
     padding: 10px 47px 11px 47px;
