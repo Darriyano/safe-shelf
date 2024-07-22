@@ -6,6 +6,7 @@ import App from './App';
 import {ResponseProvider} from "./pages/ResponseContext";
 import {IndexProvider} from "./pages/IndicesHook";
 import {DateProvider} from "./pages/DatesHook";
+import {WeightProvider} from "./pages/WeightHook";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -13,14 +14,16 @@ const root = ReactDOM.createRoot(
 
 root.render(
     <React.StrictMode>
-        <DateProvider>
-            <IndexProvider>
-                <ResponseProvider>
-                    <BrowserRouter>
-                        <App/>
-                    </BrowserRouter>
-                </ResponseProvider>
-            </IndexProvider>
-        </DateProvider>
+        <WeightProvider>
+            <DateProvider>
+                <IndexProvider>
+                    <ResponseProvider>
+                        <BrowserRouter>
+                            <App/>
+                        </BrowserRouter>
+                    </ResponseProvider>
+                </IndexProvider>
+            </DateProvider>
+        </WeightProvider>
     </React.StrictMode>
 );
