@@ -4,6 +4,7 @@ import HeaderPage from "./HeaderPage";
 import '../styles/groceryTemporary.css'
 import {useIndex} from "./IndicesHook";
 import {useDate} from "./DatesHook";
+import {useWeight} from "./WeightHook";
 
 interface newGroceries {
     login: string,
@@ -40,6 +41,8 @@ interface sendingQR {
 const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
     const {indicesArray, setArray} = useIndex();
     const {datesDict, setDict} = useDate();
+    const {weightDict, setWeight} = useWeight();
+
 
     const [groceryDates, setGroceryDates] = useState(groceries.map(g => g.date));
     const [crossedItems, setCrossedItems] = useState<number[]>([]);
@@ -70,6 +73,12 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
         setDict(datesDict);
     }
 
+    const changedWeightComponent = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        // HERE WILL SAVE THE CURRENT CLICKED ID TO DELETE
+        weightDict[index] = event.target.value;
+        setDict(weightDict);
+    }
+
     const isClicked = (index: number) => {
         return crossedItems.includes(index);
     };
@@ -90,7 +99,13 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
                         </div>
                     </div>
                     <div
-                        className="grocery-position">Weight: <b>{grocery.weight ? grocery.weight : 'Empty weight selecter'}</b>
+                        className="grocery-position">Weight:
+                        <input type="number"
+                               className="expiration-date"
+                               defaultValue={grocery.weight}
+                               value={groceryDates[grocery.id]}
+                               onChange={(event) => changedWeightComponent(event, grocery.id)}
+                        />
                     </div>
                     <div className="grocery-position">Kcal: <b>{grocery.kcal}</b></div>
                     <div className="grocery-position">Fats: <b>{grocery.fats}</b></div>
@@ -116,6 +131,7 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
     // Array of clicked indices to remove
     const {indicesArray, setArray} = useIndex();
     const {datesDict, setDict} = useDate();
+    const {weightDict, setWeight} = useWeight();
 
 
     const navigate = useNavigate();
@@ -171,6 +187,12 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
         for (let i = 0; i < groceries.length; i++) {
             if (i in datesDict) {
                 groceries[i].date = datesDict[i];
+            }
+        }
+
+        for (let i = 0; i < groceries.length; i++) {
+            if (i in weightDict) {
+                groceries[i].weight = Number(weightDict[i]);
             }
         }
 
