@@ -5,38 +5,8 @@ import '../styles/groceryTemporary.css'
 import {useIndex} from "./IndicesHook";
 import {useDate} from "./DatesHook";
 import {useWeight} from "./WeightHook";
+import {GroceryContainerProps, newGroceries, sendingQR} from "../interfaces/grocery-interfaces";
 
-interface newGroceries {
-    login: string,
-    products: {
-        id: number;
-        name: string;
-        weight: number;
-        kcal: number;
-        proteins: number;
-        fats: number;
-        carbohydrates: number;
-        date: string;
-    }[];
-}
-
-interface GroceryContainerProps {
-    groceries: {
-        id: number;
-        name: string;
-        weight: number;
-        kcal: number;
-        proteins: number;
-        fats: number;
-        carbohydrates: number;
-        date: string;
-    }[];
-}
-
-interface sendingQR {
-    login: string | null | undefined;
-    metaStringProducts: string | null | undefined;
-}
 
 const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
     const {indicesArray, setArray} = useIndex();
@@ -76,7 +46,7 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
     const changedWeightComponent = (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
         // HERE WILL SAVE THE CURRENT CLICKED ID TO DELETE
         weightDict[index] = event.target.value;
-        setDict(weightDict);
+        setWeight(weightDict);
     }
 
     const isClicked = (index: number) => {
@@ -101,6 +71,7 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
                     <div
                         className="grocery-position">Weight:
                         <input type="number"
+                               id="weight-${grocery.weight}"
                                className="expiration-date"
                                defaultValue={grocery.weight}
                                value={groceryDates[grocery.id]}
@@ -182,9 +153,6 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
     };
 
     const reDirect = async () => {
-        //TODO: HERE WERE GOING THROUGH THE groceries AND DELETING ALL FROM indicesArray
-        // TODO: +GOING THROUGH DATES+INDICES AND CHANGING DATES TO PROVIDED ONES
-
         const products: any = [];
 
         for (let i = 0; i < groceries.length; i++) {
@@ -207,17 +175,24 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
 
 
         try {
+            for (let i = 0; i < products.length; i++) {
+                if (Number(products[i].weight) === 0) {
+                    throw new Error('Weight cannot be empty! Fill all fields');
+                }
+            }
+
             let login = sessionStorage.getItem('userLogin');
             if (!login) {
                 login = ''
             }
-            //TODO: HERE CHANGING groceries INTO THE NEW ARRAY PROVIDED FROM STATES
-            // const products = groceries;
 
             const sendingGrocData: newGroceries = {
                 login,
                 products
             }
+
+            console.log(sendingGrocData.products);
+
 
             const currResponse = await fetch(`/product/save`, {
                 method: 'POST',
@@ -226,6 +201,7 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
                 },
                 body: JSON.stringify(sendingGrocData),
             });
+
             const currStatus = currResponse.status;
             if (currStatus === 200) {
                 navigate('/grocery/*', {replace: true});
@@ -235,7 +211,7 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
             }
 
         } catch (err) {
-            console.warn(err);
+            alert(err);
         }
     };
 

@@ -2,17 +2,8 @@ import React, {FC, useState} from "react";
 import HeaderPage from "./HeaderPage";
 import {useLocation, useNavigate} from "react-router-dom";
 import '../styles/details.css'
+import {updating, deleting} from "../interfaces/grocery-interfaces";
 
-interface updating {
-    login: string,
-    productID: number,
-    date: string
-}
-
-interface deleting {
-    login: string,
-    userProductID: number,
-}
 
 const GroceryDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const location = useLocation();

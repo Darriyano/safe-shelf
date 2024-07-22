@@ -2,28 +2,21 @@ import {FC} from "react";
 import HeaderPage from "./HeaderPage";
 import {useLocation, useNavigate} from "react-router-dom";
 import '../styles/details.css'
+import {IngredientsEntity, sendCooked} from "../interfaces/diet-interfaces";
 
-interface IngredientsEntity {
-    userProductId: Number,
-    name: string,
-    weight: Number
-}
-
-interface sendCooked {
-    login: string | null,
-    id: string
-}
 
 const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMenuVisible}) => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const {dishId, dishName, description, ingredients} = location.state as {
+    const {dishId, dishName, description, ingredients, dishState} = location.state as {
         dishId: string,
         dishName: string,
         description: string,
-        ingredients: Array<IngredientsEntity>
+        ingredients: Array<IngredientsEntity>,
+        dishState: string,
     };
+
     const reNavigate = () => {
         navigate('/diet/*');
     }
@@ -57,6 +50,34 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
         }
     }
 
+    const sendDeleted = async (id: string, state: string) => {
+        try {
+            const login = sessionStorage.getItem('userLogin');
+            let cState = 'dinner'
+
+            if (state === 'B') {
+                cState = 'breakfast'
+            } else if (state === 'L') {
+                cState = 'lunch'
+            }
+
+            const currResponse = await fetch(`/dish/${cState}/${login}`, {
+                method: 'DELETE'
+            });
+
+            const currStatus = currResponse.status;
+            if (currStatus === 200) {
+                sessionStorage.removeItem('state');
+                navigate('/diet/*');
+                window.location.reload();
+            } else {
+                console.error(currResponse.statusText);
+            }
+        } catch (e) {
+            console.warn(e)
+        }
+    }
+
     return (
         <>
             <HeaderPage setMenuVisible={setMenuVisible}/>
@@ -80,7 +101,11 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
                 <div className='descript'>{description}</div>
 
             </div>
-            <button className='cooked' onClick={() => sendCooked(dishId)}>Cooked</button>
+            <div className='buttons-del'>
+                <button className='fixed-button deletedish' onClick={() => sendDeleted(dishId, dishState)}>Delete dish</button>
+                <button className='fixed-button save' onClick={() => sendCooked(dishId)}>Cooked</button>
+            </div>
+
         </>
     )
 };

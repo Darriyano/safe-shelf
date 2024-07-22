@@ -1,33 +1,16 @@
 import React from 'react';
 import '../styles/dietStyles.css'
 import {useNavigate} from 'react-router-dom';
-
-// Define props type for the CardContainer component
-interface Diet {
-    currentState: string,
-    dishes: {
-        "id": string,
-        "name": string,
-        "ingredients": Array<IngredientsEntity>,
-        "description": string,
-        "type": string
-    }[];
-}
-
-interface IngredientsEntity {
-    userProductId: Number,
-    name: string,
-    weight: Number
-}
+import {IngredientsEntity, NewDiet} from "../interfaces/diet-interfaces";
 
 // CardContainer component
-const CardContainer: React.FC<Diet> = ({currentState, dishes}) => {
+const CardContainer: React.FC<NewDiet> = ({currentState, dishes}) => {
     const navigate = useNavigate();
 
-    const action = (dishId: string, dishName: string, description: string, ingredients: Array<IngredientsEntity>) => {
+    const action = (dishId: string, dishName: string, description: string, ingredients: Array<IngredientsEntity>, dishState: string) => {
 
         navigate('/details', {
-            state: {dishId, dishName, description, ingredients}
+            state: {dishId, dishName, description, ingredients, dishState}
         });
     }
 
@@ -36,7 +19,7 @@ const CardContainer: React.FC<Diet> = ({currentState, dishes}) => {
             {dishes.map((dish, index) => (
                 dish.type === currentState && (
                     <div key={index} className="card-display"
-                         onClick={() => action(dish.id, dish.name, dish.description, dish.ingredients)}>
+                         onClick={() => action(dish.id, dish.name, dish.description, dish.ingredients, dish.type)}>
                         <h2>{dish.name}</h2>
                         <svg width="30" height="21" viewBox="0 0 20 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
