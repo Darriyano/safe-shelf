@@ -15,6 +15,9 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
         description: string,
         ingredients: Array<IngredientsEntity>
     };
+
+    const description2 = description.replace('\n', '<br>')
+
     const reNavigate = () => {
         navigate('/diet/*');
     }
@@ -68,7 +71,7 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
                         <li key={index}>{ingredient.name + ": " + ingredient.weight + "g"}</li>
                     ))}
                 </ul>
-                <div className='descript'>{description}</div>
+                <div className='descript'>{description2}</div>
 
             </div>
             <button className='cooked' onClick={() => sendCooked(dishId)}>Cooked</button>
