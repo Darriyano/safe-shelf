@@ -105,6 +105,9 @@ const CardGroceryComponent: React.FC<GroceryContainerProps> = ({groceries}) => {
                                defaultValue={grocery.weight}
                                value={groceryDates[grocery.id]}
                                onChange={(event) => changedWeightComponent(event, grocery.id)}
+                               style={{
+                                   border: grocery.weight ? 'none' : '2px solid red'
+                               }}
                         />
                     </div>
                     <div className="grocery-position">Kcal: <b>{grocery.kcal}</b></div>
