@@ -17,6 +17,8 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
         dishState: string,
     };
 
+    const splitDescription = description.split('<br />')
+
     const reNavigate = () => {
         navigate('/diet/*');
     }
@@ -98,7 +100,10 @@ const DietDetails: FC<{ setMenuVisible: (visible: boolean) => void }> = ({setMen
                         <li key={index}>{ingredient.name + ": " + ingredient.weight + "g"}</li>
                     ))}
                 </ul>
-                <div className='descript'>{description}</div>
+                {/*<div className='descript'>{description}</div>*/}
+                {splitDescription.map((desc, index) =>
+                    ( <div key={index} className='descript'>{desc}</div>
+                ))}
 
             </div>
             <div className='buttons-del'>
