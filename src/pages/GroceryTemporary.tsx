@@ -185,6 +185,8 @@ const GroceryTemporary: FC<{ setMenuVisible: (visible: boolean) => void }> = ({s
             if (!login) {
                 login = ''
             }
+            //TODO: HERE CHANGING groceries INTO THE NEW ARRAY PROVIDED FROM STATES
+            // const products = groceries;
 
             const sendingGrocData: newGroceries = {
                 login,

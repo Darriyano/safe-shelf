@@ -25,6 +25,8 @@ const CardContainer = () => {
         const fetchData = async () => {
             try {
                 const login = sessionStorage.getItem('userLogin');
+
+                // TODO: FIX ENDPOINTS
                 const currResponse = await fetch(`/product/${login}`)
                 const currStatus = currResponse.status;
                 if (currStatus === 200) {
